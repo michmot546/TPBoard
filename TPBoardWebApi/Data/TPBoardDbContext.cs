@@ -8,6 +8,7 @@ namespace TPBoardWebApi.Data
         public DbSet<User> Users { get; set; }
         public DbSet<Project> Projects { get; set; }
         public DbSet<Table> Tables { get; set; }
+        public DbSet<TableElement> Elements { get; set; }
         public TPBoardDbContext(DbContextOptions<TPBoardDbContext> options) : base(options)
         {
 
