@@ -2,11 +2,12 @@ import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import {CdkDrag, CdkDragDrop, CdkDropList, moveItemInArray, transferArrayItem} from '@angular/cdk/drag-drop';
+import {MatSidenavModule} from '@angular/material/sidenav';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, RouterOutlet, CdkDropList, CdkDrag],
+  imports: [CommonModule, RouterOutlet, CdkDropList, CdkDrag,MatSidenavModule],
   templateUrl: './app.component.html',
   styleUrl: './app.component.css'
 })
