@@ -5,11 +5,11 @@ using TPBoardWebApi.Models;
 
 [ApiController]
 [Route("api/[controller]")]
-public class ElementController : Controller
+public class TableElementController : Controller
 {
     private readonly TPBoardDbContext _TPBoardDbContext;
 
-    public ElementController(TPBoardDbContext TPBoardDbContext)
+    public TableElementController(TPBoardDbContext TPBoardDbContext)
     {
         _TPBoardDbContext = TPBoardDbContext;
     }
