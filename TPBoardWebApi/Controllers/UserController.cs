@@ -32,7 +32,7 @@ namespace TPBoardWebApi.Controllers
         }
 
         [HttpPost("CreateUser")]
-        public async Task<IActionResult> CreateUser([FromBody] User newUser)
+        public async Task<IActionResult> CreateUser([Bind("Id,Login,Haslo")] User newUser)
         {
             if (newUser == null)
             {

@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using TPBoardWebApi.Data;
 
@@ -10,9 +11,11 @@ using TPBoardWebApi.Data;
 namespace TPBoardWebApi.Migrations
 {
     [DbContext(typeof(TPBoardDbContext))]
-    partial class TPBoardDbContextModelSnapshot : ModelSnapshot
+    [Migration("20240402100146_test4")]
+    partial class test4
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
