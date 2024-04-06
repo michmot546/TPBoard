@@ -1,0 +1,11 @@
+.navbar{
+    background-color: #335C81;
+    min-height: 10%;
+    align-items: center;
+    display: flex;
+    justify-content: left;
+    border-bottom: 2px solid #1E3A53;
+}
+.navbar button:first-child {
+    margin-left: 2%;
+}
