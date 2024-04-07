@@ -13,6 +13,19 @@ namespace TPBoardWebApi.Data
         {
 
         }
-        
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+            modelBuilder.Entity<ProjectUser>()
+                .HasKey(pu => new {pu.ProjectId, pu.UsertId});
+            modelBuilder.Entity<ProjectUser>()
+                .HasOne(pu => pu.Project)
+                .WithMany(pu => pu.Users)
+                .HasForeignKey(pu => pu.ProjectId);
+            modelBuilder.Entity<ProjectUser>()
+                .HasOne(pu => pu.User)
+                .WithMany(pu => pu.Projects)
+                .HasForeignKey(pu => pu.UsertId);
+        }
+
     }
 }

@@ -29,6 +29,8 @@ namespace TPBoardWebApi.Migrations
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
+                    Login = table.Column<string>(type: "nvarchar(max)", nullable: false),
+                    Password = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Email = table.Column<string>(type: "nvarchar(max)", nullable: false)
                 },
@@ -44,7 +46,7 @@ namespace TPBoardWebApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ProjectId = table.Column<int>(type: "int", nullable: false)
+                    ProjectId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -53,8 +55,7 @@ namespace TPBoardWebApi.Migrations
                         name: "FK_Tables_Projects_ProjectId",
                         column: x => x.ProjectId,
                         principalTable: "Projects",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateTable(
@@ -82,34 +83,33 @@ namespace TPBoardWebApi.Migrations
                 });
 
             migrationBuilder.CreateTable(
-                name: "TableElement",
+                name: "Elements",
                 columns: table => new
                 {
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TableId = table.Column<int>(type: "int", nullable: false)
+                    TableId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_TableElement", x => x.Id);
+                    table.PrimaryKey("PK_Elements", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TableElement_Tables_TableId",
+                        name: "FK_Elements_Tables_TableId",
                         column: x => x.TableId,
                         principalTable: "Tables",
-                        principalColumn: "Id",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "Id");
                 });
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Elements_TableId",
+                table: "Elements",
+                column: "TableId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectUser_UsersId",
                 table: "ProjectUser",
                 column: "UsersId");
-
-            migrationBuilder.CreateIndex(
-                name: "IX_TableElement_TableId",
-                table: "TableElement",
-                column: "TableId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_Tables_ProjectId",
@@ -121,16 +121,16 @@ namespace TPBoardWebApi.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropTable(
+                name: "Elements");
+
+            migrationBuilder.DropTable(
                 name: "ProjectUser");
 
             migrationBuilder.DropTable(
-                name: "TableElement");
+                name: "Tables");
 
             migrationBuilder.DropTable(
                 name: "Users");
-
-            migrationBuilder.DropTable(
-                name: "Tables");
 
             migrationBuilder.DropTable(
                 name: "Projects");

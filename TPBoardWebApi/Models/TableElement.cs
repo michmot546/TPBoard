@@ -1,9 +1,13 @@
-﻿namespace TPBoardWebApi.Models
+﻿using Microsoft.EntityFrameworkCore;
+using System.Text.Json.Serialization;
+
+namespace TPBoardWebApi.Models
 {
+    [PrimaryKey(nameof(Id))]
     public class TableElement
     {
         public int Id { get; set; }
         public string Name { get; set; }
-        public Table Table { get; set; }
+        public int TableId { get; set; }
     }
 }

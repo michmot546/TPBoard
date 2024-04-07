@@ -18,12 +18,20 @@ import {
 import { SidebarComponent } from './sidebar/sidebar.component';
 import {MatIconModule} from '@angular/material/icon';
 import {MatGridListModule} from '@angular/material/grid-list';
+import { BoardComponent } from './board/board.component';
+import { MembersComponent } from './members/members.component';
+import { SettingsComponent } from './settings/settings.component';
+import { RouterModule } from '@angular/router';
+import { RouterTestingModule } from "@angular/router/testing";
 
 @NgModule({
   declarations: [
     AppComponent,
     NavbarComponent,
     SidebarComponent,
+    BoardComponent,
+    MembersComponent,
+    SettingsComponent,
   ],
   imports: [
     BrowserModule,
@@ -35,8 +43,11 @@ import {MatGridListModule} from '@angular/material/grid-list';
     CdkDropList,
     CdkDrag,
     MatIconModule,
-    MatGridListModule
+    MatGridListModule,
+    RouterModule,
+    RouterTestingModule
   ],
+  exports: [RouterModule],
   providers: [],
   bootstrap: [AppComponent]
 })
