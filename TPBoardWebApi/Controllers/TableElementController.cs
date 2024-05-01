@@ -17,14 +17,14 @@ public class TableElementController : Controller
     [HttpGet("GetAllElements")]
     public IActionResult GetAllElements()
     {
-        var elements = _TPBoardDbContext.Elements.ToList();
+        var elements = _TPBoardDbContext.TableElements.ToList();
         return Ok(elements);
     }
 
     [HttpGet("GetElementById/{id}")]
     public IActionResult GetElementById(int id)
     {
-        var element = _TPBoardDbContext.Elements.Find(id);
+        var element = _TPBoardDbContext.TableElements.Find(id);
 
         if (element == null)
         {
@@ -42,7 +42,7 @@ public class TableElementController : Controller
             return BadRequest("Invalid element data");
         }
 
-        _TPBoardDbContext.Elements.Add(newElement);
+        _TPBoardDbContext.TableElements.Add(newElement);
         await _TPBoardDbContext.SaveChangesAsync();
 
         return CreatedAtAction(nameof(GetElementById), new { id = newElement.Id }, newElement);
@@ -64,7 +64,7 @@ public class TableElementController : Controller
         }
         catch (DbUpdateConcurrencyException)
         {
-            if (!_TPBoardDbContext.Elements.Any(e => e.Id == id))
+            if (!_TPBoardDbContext.TableElements.Any(e => e.Id == id))
             {
                 return NotFound();
             }
@@ -80,14 +80,14 @@ public class TableElementController : Controller
     [HttpDelete("DeleteElement/{id}")]
     public async Task<IActionResult> DeleteElement(int id)
     {
-        var element = await _TPBoardDbContext.Elements.FindAsync(id);
+        var element = await _TPBoardDbContext.TableElements.FindAsync(id);
 
         if (element == null)
         {
             return NotFound();
         }
 
-        _TPBoardDbContext.Elements.Remove(element);
+        _TPBoardDbContext.TableElements.Remove(element);
         await _TPBoardDbContext.SaveChangesAsync();
 
         return NoContent();
