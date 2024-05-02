@@ -1,30 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TPBoardWebApi.Data;
+using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 
 [ApiController]
 [Route("api/[controller]")]
 public class ProjectController : Controller
 {
-    private readonly TPBoardDbContext _TPBoardDbContext;
+    private readonly IProjectService _projectService;
 
-    public ProjectController(TPBoardDbContext TPBoardDbContext)
+    public ProjectController(IProjectService projectService)
     {
-        _TPBoardDbContext = TPBoardDbContext;
+        _projectService = projectService;
     }
 
     [HttpGet("GetAllProjects")]
     public IActionResult GetAllProjects()
     {
-        var projects = _TPBoardDbContext.Projects.ToList();
+        var projects = _projectService.GetAllProjects();
         return Ok(projects);
     }
 
     [HttpGet("GetProjectById/{id}")]
     public IActionResult GetProjectById(int id)
     {
-        var project = _TPBoardDbContext.Projects.Find(id);
+        var project = _projectService.GetProjectById(id);
 
         if (project == null)
         {
@@ -35,60 +36,42 @@ public class ProjectController : Controller
     }
 
     [HttpPost("CreateProject")]
-    public async Task<IActionResult> CreateProject([FromBody] Project newProject)
+    public IActionResult CreateProject([FromBody] Project newProject)
     {
         if (newProject == null)
         {
             return BadRequest("Invalid project data");
         }
 
-        _TPBoardDbContext.Projects.Add(newProject);
-        await _TPBoardDbContext.SaveChangesAsync();
+        _projectService.CreateProject(newProject);
 
         return CreatedAtAction(nameof(GetProjectById), new { id = newProject.Id }, newProject);
     }
 
     [HttpPut("UpdateProject/{id}")]
-    public async Task<IActionResult> UpdateProject(int id, [FromBody] Project updatedProject)
+    public IActionResult UpdateProject(int id, [FromBody] Project updatedProject)
     {
         if (id != updatedProject.Id)
         {
             return BadRequest("Invalid project data");
         }
 
-        _TPBoardDbContext.Entry(updatedProject).State = EntityState.Modified;
-
-        try
-        {
-            await _TPBoardDbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!_TPBoardDbContext.Projects.Any(p => p.Id == id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+        _projectService.UpdateProject(updatedProject);
 
         return NoContent();
     }
 
     [HttpDelete("DeleteProject/{id}")]
-    public async Task<IActionResult> DeleteProject(int id)
+    public IActionResult DeleteProject(int id)
     {
-        var project = await _TPBoardDbContext.Projects.FindAsync(id);
+        var project = _projectService.GetProjectById(id);
 
         if (project == null)
         {
             return NotFound();
         }
 
-        _TPBoardDbContext.Projects.Remove(project);
-        await _TPBoardDbContext.SaveChangesAsync();
+        _projectService.DeleteProject(id);
 
         return NoContent();
     }

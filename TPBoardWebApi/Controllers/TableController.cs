@@ -1,30 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TPBoardWebApi.Data;
+using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 
 [ApiController]
 [Route("api/[controller]")]
 public class TableController : Controller
 {
-    private readonly TPBoardDbContext _TPBoardDbContext;
+    private readonly ITableService _tableService;
 
-    public TableController(TPBoardDbContext TPBoardDbContext)
+    public TableController(ITableService tableService)
     {
-        _TPBoardDbContext = TPBoardDbContext;
+        _tableService = tableService;
     }
 
     [HttpGet("GetAllTables")]
     public IActionResult GetAllTables()
     {
-        var tables = _TPBoardDbContext.Tables.ToList();
+        var tables = _tableService.GetAllTables();
         return Ok(tables);
     }
 
     [HttpGet("GetTableById/{id}")]
     public IActionResult GetTableById(int id)
     {
-        var table = _TPBoardDbContext.Tables.Find(id);
+        var table = _tableService.GetTableById(id);
 
         if (table == null)
         {
@@ -35,60 +36,42 @@ public class TableController : Controller
     }
 
     [HttpPost("CreateTable")]
-    public async Task<IActionResult> CreateTable([FromBody] Table newTable)
+    public IActionResult CreateTable([FromBody] Table newTable)
     {
         if (newTable == null)
         {
             return BadRequest("Invalid table data");
         }
 
-        _TPBoardDbContext.Tables.Add(newTable);
-        await _TPBoardDbContext.SaveChangesAsync();
+        _tableService.CreateTable(newTable);
 
         return CreatedAtAction(nameof(GetTableById), new { id = newTable.Id }, newTable);
     }
 
     [HttpPut("UpdateTable/{id}")]
-    public async Task<IActionResult> UpdateTable(int id, [FromBody] Table updatedTable)
+    public IActionResult UpdateTable(int id, [FromBody] Table updatedTable)
     {
         if (id != updatedTable.Id)
         {
             return BadRequest("Invalid table data");
         }
 
-        _TPBoardDbContext.Entry(updatedTable).State = EntityState.Modified;
-
-        try
-        {
-            await _TPBoardDbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!_TPBoardDbContext.Tables.Any(t => t.Id == id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+        _tableService.UpdateTable(updatedTable);
 
         return NoContent();
     }
 
     [HttpDelete("DeleteTable/{id}")]
-    public async Task<IActionResult> DeleteTable(int id)
+    public IActionResult DeleteTable(int id)
     {
-        var table = await _TPBoardDbContext.Tables.FindAsync(id);
+        var table = _tableService.GetTableById(id);
 
         if (table == null)
         {
             return NotFound();
         }
 
-        _TPBoardDbContext.Tables.Remove(table);
-        await _TPBoardDbContext.SaveChangesAsync();
+        _tableService.DeleteTable(id);
 
         return NoContent();
     }

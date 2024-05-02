@@ -1,30 +1,31 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TPBoardWebApi.Data;
+using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 
 [ApiController]
 [Route("api/[controller]")]
 public class TableElementController : Controller
 {
-    private readonly TPBoardDbContext _TPBoardDbContext;
+    private readonly ITableElementService _tableElementService;
 
-    public TableElementController(TPBoardDbContext TPBoardDbContext)
+    public TableElementController(ITableElementService tableElementService)
     {
-        _TPBoardDbContext = TPBoardDbContext;
+        _tableElementService = tableElementService;
     }
 
     [HttpGet("GetAllElements")]
     public IActionResult GetAllElements()
     {
-        var elements = _TPBoardDbContext.TableElements.ToList();
+        var elements = _tableElementService.GetAllTableElements();
         return Ok(elements);
     }
 
     [HttpGet("GetElementById/{id}")]
     public IActionResult GetElementById(int id)
     {
-        var element = _TPBoardDbContext.TableElements.Find(id);
+        var element = _tableElementService.GetTableElementById(id);
 
         if (element == null)
         {
@@ -35,61 +36,44 @@ public class TableElementController : Controller
     }
 
     [HttpPost("CreateElement")]
-    public async Task<IActionResult> CreateElement([FromBody] TableElement newElement)
+    public IActionResult CreateElement([FromBody] TableElement newElement)
     {
         if (newElement == null)
         {
             return BadRequest("Invalid element data");
         }
 
-        _TPBoardDbContext.TableElements.Add(newElement);
-        await _TPBoardDbContext.SaveChangesAsync();
+        _tableElementService.CreateTableElement(newElement);
 
         return CreatedAtAction(nameof(GetElementById), new { id = newElement.Id }, newElement);
     }
 
     [HttpPut("UpdateElement/{id}")]
-    public async Task<IActionResult> UpdateElement(int id, [FromBody] TableElement updatedElement)
+    public IActionResult UpdateElement(int id, [FromBody] TableElement updatedElement)
     {
         if (id != updatedElement.Id)
         {
             return BadRequest("Invalid element data");
         }
 
-        _TPBoardDbContext.Entry(updatedElement).State = EntityState.Modified;
-
-        try
-        {
-            await _TPBoardDbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateConcurrencyException)
-        {
-            if (!_TPBoardDbContext.TableElements.Any(e => e.Id == id))
-            {
-                return NotFound();
-            }
-            else
-            {
-                throw;
-            }
-        }
+        _tableElementService.UpdateTableElement(updatedElement);
 
         return NoContent();
     }
 
     [HttpDelete("DeleteElement/{id}")]
-    public async Task<IActionResult> DeleteElement(int id)
+    public IActionResult DeleteElement(int id)
     {
-        var element = await _TPBoardDbContext.TableElements.FindAsync(id);
+        var element = _tableElementService.GetTableElementById(id);
 
         if (element == null)
         {
             return NotFound();
         }
 
-        _TPBoardDbContext.TableElements.Remove(element);
-        await _TPBoardDbContext.SaveChangesAsync();
+        _tableElementService.DeleteTableElement(id);
 
         return NoContent();
     }
 }
+
