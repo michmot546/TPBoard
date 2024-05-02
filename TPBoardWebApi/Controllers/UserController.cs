@@ -4,8 +4,6 @@ using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 
-namespace TPBoardWebApi.Controllers
-{
     [ApiController]
     [Route("api/[controller]")]
     public class UserController : Controller
@@ -75,4 +73,3 @@ namespace TPBoardWebApi.Controllers
             return NoContent();
         }
     }
-}

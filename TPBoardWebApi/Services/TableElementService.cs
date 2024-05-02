@@ -3,7 +3,7 @@ using TPBoardWebApi.Models;
 
 namespace TPBoardWebApi.Services
 {
-    public class TableElementService
+    public class TableElementService : ITableElementService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -24,7 +24,7 @@ namespace TPBoardWebApi.Services
 
         public void CreateTableElement(TableElement element)
         {
-            _unitOfWork.TableElements.Insert(element);
+            _unitOfWork.TableElements.Add(element);
             _unitOfWork.Save();
         }
 

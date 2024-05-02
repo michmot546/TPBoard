@@ -23,6 +23,7 @@ import { MembersComponent } from './members/members.component';
 import { SettingsComponent } from './settings/settings.component';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
+import { HttpClientModule } from '@angular/common/http';
 
 @NgModule({
   declarations: [
@@ -32,6 +33,7 @@ import { RouterTestingModule } from "@angular/router/testing";
     BoardComponent,
     MembersComponent,
     SettingsComponent,
+
   ],
   imports: [
     BrowserModule,
@@ -45,7 +47,8 @@ import { RouterTestingModule } from "@angular/router/testing";
     MatIconModule,
     MatGridListModule,
     RouterModule,
-    RouterTestingModule
+    RouterTestingModule,    
+    HttpClientModule
   ],
   exports: [RouterModule],
   providers: [],
