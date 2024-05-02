@@ -98,7 +98,7 @@ namespace TPBoardWebApi.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Elements");
+                    b.ToTable("TableElements");
                 });
 
             modelBuilder.Entity("TPBoardWebApi.Models.User", b =>

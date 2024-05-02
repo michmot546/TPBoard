@@ -12,8 +12,8 @@ using TPBoardWebApi.Data;
 namespace TPBoardWebApi.Migrations
 {
     [DbContext(typeof(TPBoardDbContext))]
-    [Migration("20240407164218_test2")]
-    partial class test2
+    [Migration("20240501140052_test")]
+    partial class test
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -101,7 +101,7 @@ namespace TPBoardWebApi.Migrations
 
                     b.HasIndex("TableId");
 
-                    b.ToTable("Elements");
+                    b.ToTable("TableElements");
                 });
 
             modelBuilder.Entity("TPBoardWebApi.Models.User", b =>
@@ -163,13 +163,11 @@ namespace TPBoardWebApi.Migrations
 
             modelBuilder.Entity("TPBoardWebApi.Models.TableElement", b =>
                 {
-                    b.HasOne("TPBoardWebApi.Models.Table", "Table")
+                    b.HasOne("TPBoardWebApi.Models.Table", null)
                         .WithMany("Elements")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Table");
                 });
 
             modelBuilder.Entity("TPBoardWebApi.Models.Project", b =>
