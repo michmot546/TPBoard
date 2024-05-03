@@ -12,22 +12,22 @@ export class TableElementService {
   constructor(private http: HttpClient) { }
 
   getAllTableElements(): Observable<TableElement[]> {
-    return this.http.get<TableElement[]>(this.apiUrl);
+    return this.http.get<TableElement[]>(`${this.apiUrl}/GetAllTableElements`);
   }
 
   getTableElementById(id: number): Observable<TableElement> {
-    return this.http.get<TableElement>(`${this.apiUrl}/${id}`);
+    return this.http.get<TableElement>(`${this.apiUrl}/GetTableElementById/${id}`);
   }
 
-  createTableElement(TableElement: TableElement): Observable<TableElement> {
-    return this.http.post<TableElement>(this.apiUrl, TableElement);
+  createTableElement(tableElement: TableElement): Observable<TableElement> {
+    return this.http.post<TableElement>(`${this.apiUrl}/CreateTableElement`, tableElement);
   }
 
-  updateTableElement(TableElement: TableElement): Observable<TableElement> {
-    return this.http.put<TableElement>(`${this.apiUrl}/${TableElement.id}`, TableElement);
+  updateTableElement(tableElement: TableElement): Observable<TableElement> {
+    return this.http.put<TableElement>(`${this.apiUrl}/UpdateTableElement/${tableElement.id}`, tableElement);
   }
 
   deleteTableElement(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/DeleteTableElement/${id}`);
   }
 }

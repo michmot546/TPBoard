@@ -12,22 +12,22 @@ export class TableService {
   constructor(private http: HttpClient) { }
 
   getAllTables(): Observable<Table[]> {
-    return this.http.get<Table[]>(this.apiUrl);
+    return this.http.get<Table[]>(`${this.apiUrl}/GetAllTables`);
   }
 
   getTableById(id: number): Observable<Table> {
-    return this.http.get<Table>(`${this.apiUrl}/${id}`);
+    return this.http.get<Table>(`${this.apiUrl}/GetTableById/${id}`);
   }
 
-  createTable(Table: Table): Observable<Table> {
-    return this.http.post<Table>(this.apiUrl, Table);
+  createTable(table: Table): Observable<Table> {
+    return this.http.post<Table>(`${this.apiUrl}/CreateTable`, table); 
   }
 
-  updateTable(Table: Table): Observable<Table> {
-    return this.http.put<Table>(`${this.apiUrl}/${Table.id}`, Table);
+  updateTable(table: Table): Observable<Table> {
+    return this.http.put<Table>(`${this.apiUrl}/UpdateTable/${table.id}`, table);
   }
 
   deleteTable(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/DeleteTable/${id}`);
   }
 }

@@ -7,27 +7,27 @@ import { Project } from '../interfaces/project.model';
   providedIn: 'root'
 })
 export class ProjectService {
-  private apiUrl = 'http://localhost:7134/api/project'; // Your API endpoint
+  private apiUrl = 'http://localhost:7134/api/project';
 
   constructor(private http: HttpClient) { }
 
   getAllProjects(): Observable<Project[]> {
-    return this.http.get<Project[]>(this.apiUrl);
+    return this.http.get<Project[]>(`${this.apiUrl}/GetAllProjects`);
   }
 
   getProjectById(id: number): Observable<Project> {
-    return this.http.get<Project>(`${this.apiUrl}/${id}`);
+    return this.http.get<Project>(`${this.apiUrl}/GetProjectById/${id}`);
   }
 
   createProject(project: Project): Observable<Project> {
-    return this.http.post<Project>(this.apiUrl, project);
+    return this.http.post<Project>(`${this.apiUrl}/CreateProject`, project);
   }
 
   updateProject(project: Project): Observable<Project> {
-    return this.http.put<Project>(`${this.apiUrl}/${project.id}`, project);
+    return this.http.put<Project>(`${this.apiUrl}/UpdateProject/${project.id}`, project);
   }
 
   deleteProject(id: number): Observable<void> {
-    return this.http.delete<void>(`${this.apiUrl}/${id}`);
+    return this.http.delete<void>(`${this.apiUrl}/DeleteProject/${id}`); 
   }
 }
