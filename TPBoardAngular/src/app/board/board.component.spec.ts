@@ -1,5 +1,6 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { MatCardModule } from '@angular/material/card';
 import { BoardComponent } from './board.component';
 
 describe('BoardComponent', () => {
@@ -8,7 +9,8 @@ describe('BoardComponent', () => {
 
   beforeEach(() => {
     TestBed.configureTestingModule({
-      declarations: [BoardComponent]
+      declarations: [BoardComponent],
+      imports: [DragDropModule, MatCardModule]
     });
     fixture = TestBed.createComponent(BoardComponent);
     component = fixture.componentInstance;

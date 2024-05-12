@@ -12,13 +12,17 @@ namespace TPBoardWebApi.Models
         [Required]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
         public int Id { get; set; }
+
         [Required(ErrorMessage = "Login needed.")]
         public string Login { get; set; }
+
         [Required(ErrorMessage = "Password needed.")]
         [MinLength(8, ErrorMessage = "Password must be at least 8 characters long.")]
         public string Password { get; set; }
+
         public string Name { get; set; }
         public string Email { get; set; }
+
         [JsonIgnore]
         public ICollection<ProjectUser>? Projects { get; set; }
     }

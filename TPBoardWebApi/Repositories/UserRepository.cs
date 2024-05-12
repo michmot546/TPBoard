@@ -22,19 +22,12 @@ namespace TPBoardWebApi.Repositories
         public void Delete(User entity)
         {
             _context.Users.Remove(entity);
-            SaveChanges(entity);
+            SaveChanges();
         }
 
         public User FirstOrDefault(Expression<Func<User, bool>> predicate)
         {
-            var User = _context.Users.FirstOrDefault(predicate);
-
-            if (User == null)
-            {
-                throw new InvalidOperationException("No User matches the specified condition.");
-            }
-
-            return User;
+            return _context.Users.FirstOrDefault(predicate);
         }
 
         public IEnumerable<User> GetAll()
@@ -44,17 +37,10 @@ namespace TPBoardWebApi.Repositories
 
         public User GetById(int id)
         {
-            var User = _context.Users.Find(id);
-
-            if (User == null)
-            {
-                throw new InvalidOperationException($"User with ID {id} does not exist.");
-            }
-
-            return User;
+            return _context.Users.Find(id);
         }
 
-        public void SaveChanges(User entity)
+        public void SaveChanges()
         {
             _context.SaveChanges();
         }
@@ -62,7 +48,7 @@ namespace TPBoardWebApi.Repositories
         public void Update(User entity)
         {
             _context.Users.Update(entity);
-            SaveChanges(entity);
+            SaveChanges();
         }
     }
 }

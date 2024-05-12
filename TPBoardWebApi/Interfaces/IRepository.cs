@@ -9,7 +9,7 @@ namespace TPBoardWebApi.Interfaces
         void Add(TEntity entity);
         void Update(TEntity entity);
         void Delete(TEntity entity);
-        void SaveChanges(TEntity entity);
+        void SaveChanges();
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
     }
 }

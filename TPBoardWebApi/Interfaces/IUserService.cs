@@ -6,6 +6,8 @@ namespace TPBoardWebApi.Interfaces
     {
         IEnumerable<User> GetAllUsers();
         User GetUserById(int id);
+        User GetUserByLogin(string login);
+        bool VerifyUser(string login, string password);
         void CreateUser(User user);
         void UpdateUser(User user);
         void DeleteUser(int id);

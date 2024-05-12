@@ -1,9 +1,10 @@
 ﻿using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
+using BCrypt.Net;
 
 namespace TPBoardWebApi.Services
 {
-    public class UserService :IUserService
+    public class UserService : IUserService
     {
         private readonly IUnitOfWork _unitOfWork;
 
@@ -22,10 +23,22 @@ namespace TPBoardWebApi.Services
             return _unitOfWork.Users.GetById(id);
         }
 
+        public User GetUserByLogin(string login)
+        {
+            return _unitOfWork.Users.FirstOrDefault(u => u.Login == login);
+        }
+
         public void CreateUser(User user)
         {
+            user.Password = BCrypt.Net.BCrypt.HashPassword(user.Password);
             _unitOfWork.Users.Add(user);
             _unitOfWork.Save();
+        }
+
+        public bool VerifyUser(string login, string password)
+        {
+            var user = GetUserByLogin(login);
+            return user != null && BCrypt.Net.BCrypt.Verify(password, user.Password);
         }
 
         public void UpdateUser(User user)

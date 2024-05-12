@@ -19,11 +19,8 @@ namespace TPBoardWebApi.Repositories
         }
 
         public IRepository<Project> Projects { get; set; }
-
         public IRepository<Table> Tables { get; set; }
-
         public IRepository<TableElement> TableElements { get; set; }
-
         public IRepository<User> Users { get; set; }
 
         protected virtual void Dispose(bool disposing)

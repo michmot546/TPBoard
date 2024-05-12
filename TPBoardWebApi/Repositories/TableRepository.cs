@@ -22,7 +22,7 @@ namespace TPBoardWebApi.Repositories
         public void Delete(Table entity)
         {
             _context.Tables.Remove(entity);
-            SaveChanges(entity);
+            SaveChanges();
         }
 
         public Table FirstOrDefault(Expression<Func<Table, bool>> predicate)
@@ -54,7 +54,7 @@ namespace TPBoardWebApi.Repositories
             return Table;
         }
 
-        public void SaveChanges(Table entity)
+        public void SaveChanges()
         {
             _context.SaveChanges();
         }
@@ -62,7 +62,7 @@ namespace TPBoardWebApi.Repositories
         public void Update(Table entity)
         {
             _context.Tables.Update(entity);
-            SaveChanges(entity);
+            SaveChanges();
         }
     }
 }
