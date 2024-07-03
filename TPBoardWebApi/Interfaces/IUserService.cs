@@ -11,5 +11,6 @@ namespace TPBoardWebApi.Interfaces
         void CreateUser(User user);
         void UpdateUser(User user);
         void DeleteUser(int id);
+        bool UserExists(string login);
     }
 }

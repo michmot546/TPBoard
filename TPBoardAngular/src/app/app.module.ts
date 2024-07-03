@@ -1,13 +1,13 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
-
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { AppComponent } from './app.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
-import {MatSidenavModule} from '@angular/material/sidenav';
+import { MatSidenavModule} from '@angular/material/sidenav';
 import { NavbarComponent } from './navbar/navbar.component';
-import {MatListModule} from '@angular/material/list';
+import { MatListModule} from '@angular/material/list';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -24,6 +24,11 @@ import { SettingsComponent } from './settings/settings.component';
 import { RouterModule } from '@angular/router';
 import { RouterTestingModule } from "@angular/router/testing";
 import { HttpClientModule } from '@angular/common/http';
+import { LoginComponent } from './login/login.component';
+import { RegisterComponent } from './register/register.component';
+import { MatFormFieldModule } from '@angular/material/form-field';
+import { MatInputModule } from '@angular/material/input';
+import { AppRoutingModule } from './app-routing.module';
 
 @NgModule({
   declarations: [
@@ -33,7 +38,8 @@ import { HttpClientModule } from '@angular/common/http';
     BoardComponent,
     MembersComponent,
     SettingsComponent,
-
+    LoginComponent,
+    RegisterComponent,
   ],
   imports: [
     BrowserModule,
@@ -42,13 +48,19 @@ import { HttpClientModule } from '@angular/common/http';
     MatMenuModule,
     MatSidenavModule,
     MatListModule,
+    MatFormFieldModule,
+    MatInputModule,
+    MatButtonModule,
     CdkDropList,
     CdkDrag,
     MatIconModule,
     MatGridListModule,
     RouterModule,
     RouterTestingModule,    
-    HttpClientModule
+    HttpClientModule,
+    ReactiveFormsModule,
+    AppRoutingModule,
+    FormsModule,
   ],
   exports: [RouterModule],
   providers: [],

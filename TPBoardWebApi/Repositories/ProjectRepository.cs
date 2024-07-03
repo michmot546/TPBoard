@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
@@ -18,6 +19,11 @@ namespace TPBoardWebApi.Repositories
         public void Add(Project entity)
         {
             _context.Projects.Add(entity);
+        }
+
+        public bool Any(Expression<Func<Project, bool>> predicate)
+        {
+            return _context.Projects.Any(predicate);
         }
 
         public void Delete(Project entity)

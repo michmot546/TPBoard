@@ -19,6 +19,11 @@ namespace TPBoardWebApi.Repositories
             _context.Users.Add(entity);
         }
 
+        public bool Any(Expression<Func<User, bool>> predicate)
+        {
+            return _context.Users.Any(predicate);
+        }
+
         public void Delete(User entity)
         {
             _context.Users.Remove(entity);

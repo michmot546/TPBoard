@@ -20,7 +20,7 @@ builder.Services.AddCors(options =>
 {
     options.AddDefaultPolicy(builder =>
     {
-        builder.WithOrigins("http://localhost:4200") // Update with the correct origin of your Angular app
+        builder.WithOrigins("http://localhost:7134", "http://localhost:4200")
                .AllowAnyHeader()
                .AllowAnyMethod();
     });

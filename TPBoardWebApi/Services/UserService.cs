@@ -1,6 +1,7 @@
 ﻿using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 using BCrypt.Net;
+using Microsoft.EntityFrameworkCore;
 
 namespace TPBoardWebApi.Services
 {
@@ -55,6 +56,10 @@ namespace TPBoardWebApi.Services
                 _unitOfWork.Users.Delete(user);
                 _unitOfWork.Save();
             }
+        }
+        public bool UserExists(string login)
+        {
+            return _unitOfWork.Users.Any(u => u.Login == login);
         }
     }
 }

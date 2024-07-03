@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using System.Linq;
+using System.Linq.Expressions;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
@@ -17,6 +18,11 @@ namespace TPBoardWebApi.Repositories
         public void Add(Table entity)
         {
             _context.Tables.Add(entity);
+        }
+
+        public bool Any(Expression<Func<Table, bool>> predicate)
+        {
+            return _context.Tables.Any(predicate);
         }
 
         public void Delete(Table entity)

@@ -29,13 +29,25 @@ namespace TPBoardWebApi.Controllers
                 return BadRequest("Invalid user data");
             }
 
+            if (_userService.UserExists(newUser.Login))
+            {
+                return Conflict("A user with this login already exists.");
+            }
+
             _userService.CreateUser(newUser);
-            return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, newUser);
+            var token = GenerateJwtToken(newUser);
+            return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, new { token });
         }
 
+
         [HttpPost("login")]
-        public IActionResult Login([FromBody] User loginDto)
+        public IActionResult Login([FromBody] UserLoginDto loginDto)
         {
+            if (loginDto == null || !ModelState.IsValid)
+            {
+                return BadRequest("Invalid login data");
+            }
+
             if (_userService.VerifyUser(loginDto.Login, loginDto.Password))
             {
                 var user = _userService.GetUserByLogin(loginDto.Login);
@@ -44,6 +56,7 @@ namespace TPBoardWebApi.Controllers
             }
             return BadRequest("Username or password is incorrect");
         }
+
 
         [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
