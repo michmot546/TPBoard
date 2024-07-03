@@ -11,5 +11,6 @@ namespace TPBoardWebApi.Interfaces
         void Delete(TEntity entity);
         void SaveChanges();
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
+        bool Any(Expression<Func<TEntity, bool>> predicate);
     }
 }
