@@ -1,11 +1,11 @@
-<div *ngIf="tables.length > 0">
+<div *ngIf="tables.length >= 0">
     <div class="tables-container">
       <mat-card class="table-card" *ngFor="let table of tables">
         <mat-card-header>
           <mat-card-title>{{ table.name }}</mat-card-title>
         </mat-card-header>
         <mat-card-content>
-          <div *ngIf="table.elements && table.elements.length > 0"
+          <div *ngIf="table.elements && table.elements.length >= 0"
             cdkDropList
             id="list-{{table.id}}"
             [cdkDropListData]="table.elements"
@@ -14,9 +14,10 @@
             (cdkDropListDropped)="drop($event, table)">
             <div *ngFor="let element of table.elements" class="example-box" cdkDrag>{{ element.name }}</div>
           </div>
+          <!--
           <div *ngIf="table.elements && table.elements.length === 0">
             <p>No elements available for this table.</p>
-          </div>
+          </div>-->
         </mat-card-content>
       </mat-card>
     </div>

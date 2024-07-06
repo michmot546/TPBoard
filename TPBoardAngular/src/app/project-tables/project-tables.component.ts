@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TableService } from '../services/table.service';
-import { TableElementService } from '../services/table-element.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Table } from '../interfaces/table.model';
 import { TableElement } from '../interfaces/tableelement.model';
+import { TableElementService } from '../services/table-element.service';
 
 @Component({
   selector: 'app-project-tables',
@@ -33,8 +33,10 @@ export class ProjectTablesComponent implements OnInit {
       next: tables => {
         this.tables = tables;
         this.tables.forEach(table => {
+          table.elements = table.elements || []; // Ensure elements is always an array
           this.tableElementService.getTableElementsByTableId(table.id).subscribe({
             next: elements => {
+              console.log(`Elements for table ID ${table.id}:`, elements);
               table.elements = elements || [];
               this.connectedDropLists.push(`list-${table.id}`);
             },
@@ -60,6 +62,7 @@ export class ProjectTablesComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+
       const movedElement = event.container.data[event.currentIndex];
       movedElement.tableId = table.id; // Update the tableId for the moved element
       this.tableElementService.updateTableElement(movedElement).subscribe({
@@ -68,6 +71,7 @@ export class ProjectTablesComponent implements OnInit {
       });
     }
 
+    // Update the table in the backend
     this.tableService.updateTable(table).subscribe({
       next: () => console.log(`Updated table ID ${table.id}`),
       error: err => console.error(`Failed to update table ID ${table.id}:`, err)
