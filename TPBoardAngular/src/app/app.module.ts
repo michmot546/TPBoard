@@ -33,6 +33,9 @@ import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { AuthService } from './services';
 import { AuthInterceptor } from './services/auth-interceptor.service';
+import { ProjectTablesComponent } from './project-tables/project-tables.component';
+import { TableService } from './services/table.service';
+import { TableElementService } from './services/table-element.service';
 @NgModule({
   declarations: [
     AppComponent,
@@ -43,6 +46,7 @@ import { AuthInterceptor } from './services/auth-interceptor.service';
     SettingsComponent,
     LoginComponent,
     RegisterComponent,
+    ProjectTablesComponent,
   ],
   imports: [
     BrowserModule,
@@ -69,7 +73,9 @@ import { AuthInterceptor } from './services/auth-interceptor.service';
   ],
   exports: [RouterModule],
   providers: [
-    AuthService,
+    TableService, 
+    TableElementService,
+    AuthService, 
     {
       provide: HTTP_INTERCEPTORS,
       useClass: AuthInterceptor,

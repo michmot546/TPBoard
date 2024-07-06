@@ -35,6 +35,15 @@ public class TableElementController : Controller
 
         return Ok(element);
     }
+
+    [Authorize]
+    [HttpGet("GetElementsByTableId/{tableId}")]
+    public IActionResult GetElementsByTableId(int tableId)
+    {
+        var elements = _tableElementService.GetTableElementsByTableId(tableId);
+        return Ok(elements);
+    }
+
     [Authorize]
     [HttpPost("CreateElement")]
     public IActionResult CreateElement([FromBody] TableElement newElement)

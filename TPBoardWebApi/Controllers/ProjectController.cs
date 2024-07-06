@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
+using System.Security.Claims;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
@@ -37,6 +38,16 @@ public class ProjectController : Controller
 
         return Ok(project);
     }
+
+    [Authorize]
+    [HttpGet("GetUserProjects")]
+    public IActionResult GetUserProjects()
+    {
+        var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+        var projects = _projectService.GetProjectsByUserId(userId);
+        return Ok(projects);
+    }
+
 
     [Authorize]
     [HttpPost("CreateProject")]
@@ -81,4 +92,5 @@ public class ProjectController : Controller
 
         return NoContent();
     }
+
 }

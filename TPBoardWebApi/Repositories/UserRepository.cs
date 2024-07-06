@@ -30,6 +30,11 @@ namespace TPBoardWebApi.Repositories
             SaveChanges();
         }
 
+        public IEnumerable<User> Find(Expression<Func<User, bool>> predicate)
+        {
+            throw new NotImplementedException();
+        }
+
         public User FirstOrDefault(Expression<Func<User, bool>> predicate)
         {
             return _context.Users.FirstOrDefault(predicate);

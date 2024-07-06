@@ -1,4 +1,5 @@
-﻿using TPBoardWebApi.Interfaces;
+﻿using Microsoft.AspNetCore.Mvc;
+using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 
 namespace TPBoardWebApi.Services
@@ -42,6 +43,10 @@ namespace TPBoardWebApi.Services
                 _unitOfWork.TableElements.Delete(element);
                 _unitOfWork.Save();
             }
+        }
+        public IEnumerable<TableElement> GetTableElementsByTableId(int tableId)
+        {
+            return _unitOfWork.TableElements.Find(te => te.TableId == tableId).ToList();
         }
     }
 }

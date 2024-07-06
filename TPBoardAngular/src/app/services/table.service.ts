@@ -7,7 +7,7 @@ import { Table } from '../interfaces/table.model';
   providedIn: 'root'
 })
 export class TableService {
-  private apiUrl = 'http://localhost:7134/api/Table';
+  private apiUrl = 'https://localhost:7134/api/Table';
 
   constructor(private http: HttpClient) { }
 
@@ -18,7 +18,9 @@ export class TableService {
   getTableById(id: number): Observable<Table> {
     return this.http.get<Table>(`${this.apiUrl}/GetTableById/${id}`);
   }
-
+  getTablesByProjectId(projectId: number): Observable<Table[]> {
+    return this.http.get<Table[]>(`${this.apiUrl}/GetTablesByProjectId/${projectId}`);
+  }
   createTable(table: Table): Observable<Table> {
     return this.http.post<Table>(`${this.apiUrl}/CreateTable`, table); 
   }

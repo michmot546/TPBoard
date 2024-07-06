@@ -7,7 +7,7 @@ import { Observable } from 'rxjs';
   providedIn: 'root'
 })
 export class TableElementService {
-  private apiUrl = 'http://localhost:7134/api/TableElement';
+  private apiUrl = 'https://localhost:7134/api/TableElement';
 
   constructor(private http: HttpClient) { }
 
@@ -17,6 +17,10 @@ export class TableElementService {
 
   getTableElementById(id: number): Observable<TableElement> {
     return this.http.get<TableElement>(`${this.apiUrl}/GetTableElementById/${id}`);
+  }
+
+  getTableElementsByTableId(tableId: number): Observable<TableElement[]> {
+    return this.http.get<TableElement[]>(`${this.apiUrl}/GetElementsByTableId/${tableId}`);
   }
 
   createTableElement(tableElement: TableElement): Observable<TableElement> {

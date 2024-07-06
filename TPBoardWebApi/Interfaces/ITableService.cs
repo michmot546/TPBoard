@@ -9,5 +9,6 @@ namespace TPBoardWebApi.Interfaces
         void CreateTable(Table table);
         void UpdateTable(Table table);
         void DeleteTable(int id);
+        IEnumerable<Table> GetTablesByProjectId(int projectId);
     }
 }

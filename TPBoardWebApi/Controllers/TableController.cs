@@ -35,6 +35,15 @@ public class TableController : Controller
 
         return Ok(table);
     }
+
+    [Authorize]
+    [HttpGet("GetTablesByProjectId/{projectId}")]
+    public IActionResult GetTablesByProjectId(int projectId)
+    {
+        var tables = _tableService.GetTablesByProjectId(projectId);
+        return Ok(tables);
+    }
+
     [Authorize]
     [HttpPost("CreateTable")]
     public IActionResult CreateTable([FromBody] Table newTable)

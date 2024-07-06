@@ -43,5 +43,12 @@ namespace TPBoardWebApi.Services
                 _unitOfWork.Save();
             }
         }
+
+        public IEnumerable<Project> GetProjectsByUserId(int userId)
+        {
+            return _unitOfWork.Projects
+                              .Find(p => p.OwnerId == userId || p.Users.Any(u => u.UsertId == userId))
+                              .ToList();
+        }
     }
 }

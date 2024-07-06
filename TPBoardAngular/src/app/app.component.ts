@@ -17,15 +17,7 @@ export class AppComponent implements OnInit {
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
-    if (this.isAuthenticated) {
-      this.projectService.getAllProjects().subscribe({
-        next: projects => {
-          console.log('All projects:', projects);
-        },
-        error: err => {
-          console.error('Failed to fetch projects:', err);
-        }
-      });
-    }
+    
+
   }
 }

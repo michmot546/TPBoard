@@ -1,4 +1,5 @@
 ﻿using System.Linq.Expressions;
+using TPBoardWebApi.Models;
 
 namespace TPBoardWebApi.Interfaces
 {
@@ -12,5 +13,6 @@ namespace TPBoardWebApi.Interfaces
         void SaveChanges();
         TEntity FirstOrDefault(Expression<Func<TEntity, bool>> predicate);
         bool Any(Expression<Func<TEntity, bool>> predicate);
+        IEnumerable<TEntity> Find(Expression<Func<TEntity, bool>> predicate);
     }
 }

@@ -1,4 +1,5 @@
-﻿using System.Linq;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq;
 using System.Linq.Expressions;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
@@ -29,6 +30,11 @@ namespace TPBoardWebApi.Repositories
         {
             _context.Tables.Remove(entity);
             SaveChanges();
+        }
+
+        public IEnumerable<Table> Find(Expression<Func<Table, bool>> predicate)
+        {
+            return _context.Tables.Where(predicate).ToList();
         }
 
         public Table FirstOrDefault(Expression<Func<Table, bool>> predicate)
@@ -69,6 +75,10 @@ namespace TPBoardWebApi.Repositories
         {
             _context.Tables.Update(entity);
             SaveChanges();
+        }
+        public IEnumerable<Table> GetTablesByProjectId(int projectId)
+        {
+            return _context.Tables.Where(t => t.ProjectId == projectId).ToList();
         }
     }
 }

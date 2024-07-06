@@ -1,4 +1,6 @@
-﻿using TPBoardWebApi.Models;
+﻿using Microsoft.AspNetCore.Mvc;
+using System.Collections.Generic;
+using TPBoardWebApi.Models;
 
 namespace TPBoardWebApi.Interfaces
 {
@@ -9,5 +11,6 @@ namespace TPBoardWebApi.Interfaces
         void CreateTableElement(TableElement element);
         void UpdateTableElement(TableElement element);
         void DeleteTableElement(int id);
+        IEnumerable<TableElement> GetTableElementsByTableId(int tableId);
     }
 }

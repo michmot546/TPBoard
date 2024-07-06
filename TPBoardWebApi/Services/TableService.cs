@@ -43,5 +43,12 @@ namespace TPBoardWebApi.Services
                 _unitOfWork.Save();
             }
         }
+
+        public IEnumerable<Table> GetTablesByProjectId(int projectId)
+        {
+            return _unitOfWork.Tables
+                  .Find(t => t.ProjectId == projectId)
+                  .ToList();
+        }
     }
 }

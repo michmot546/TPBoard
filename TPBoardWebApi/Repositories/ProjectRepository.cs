@@ -71,5 +71,11 @@ namespace TPBoardWebApi.Repositories
             _context.Projects.Update(entity);
             SaveChanges();
         }
+
+        public IEnumerable<Project> Find(Expression<Func<Project, bool>> predicate)
+        {
+            return _context.Projects.Include(p => p.Users).Where(predicate).ToList();
+        }
+
     }
 }

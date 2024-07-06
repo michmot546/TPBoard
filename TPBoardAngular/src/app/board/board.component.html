@@ -1,17 +1,21 @@
-<div class="div-toDoList">
-    <h2>To do</h2>
-
-    <div cdkDropList #todoList="cdkDropList" [cdkDropListData]="todo" [cdkDropListConnectedTo]="[doneList]"
-        class="toDoList" (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let item of todo; let i = index" class="toDoListElement" cdkDrag>{{ item }}</div>
+<div *ngIf="isAuthenticated">
+    <div class="projects-container">
+      <mat-card class="project-card" *ngFor="let project of projects">
+        <mat-card-header>
+          <mat-card-title>{{ project.name }}</mat-card-title>
+          <mat-card-subtitle>Autor: {{ getOwnerName(project.ownerId) }}</mat-card-subtitle>
+        </mat-card-header>
+        <mat-card-content>
+          
+        </mat-card-content>
+        <mat-card-actions>
+          <button mat-button [routerLink]="['/project', project.id]">VIEW</button>  
+          <button mat-button>EDIT</button>
+        </mat-card-actions>
+      </mat-card>
     </div>
-</div>
-
-<div class="div-toDoList">
-    <h2>Done</h2>
-
-    <div cdkDropList #doneList="cdkDropList" [cdkDropListData]="done" [cdkDropListConnectedTo]="[todoList]"
-        class="toDoList" (cdkDropListDropped)="drop($event)">
-        <div *ngFor="let item of done; let i = index" class="toDoListElement" cdkDrag>{{ item }}</div>
-    </div>
-</div>
+  </div>
+  <div *ngIf="!isAuthenticated">
+    <p>You must be logged in to view your projects.</p>
+  </div>
+  

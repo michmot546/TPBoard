@@ -31,6 +31,11 @@ namespace TPBoardWebApi.Repositories
             SaveChanges();
         }
 
+        public IEnumerable<TableElement> Find(Expression<Func<TableElement, bool>> predicate)
+        {
+            return _context.TableElements.Where(predicate).ToList();
+        }
+
         public TableElement FirstOrDefault(Expression<Func<TableElement, bool>> predicate)
         {
             var TableElement = _context.TableElements.FirstOrDefault(predicate);
