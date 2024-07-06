@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
@@ -15,6 +16,7 @@ public class ProjectController : Controller
         _projectService = projectService;
     }
 
+    [Authorize]
     [HttpGet("GetAllProjects")]
     public IActionResult GetAllProjects()
     {
@@ -22,6 +24,7 @@ public class ProjectController : Controller
         return Ok(projects);
     }
 
+    [Authorize]
     [HttpGet("GetProjectById/{id}")]
     public IActionResult GetProjectById(int id)
     {
@@ -35,6 +38,7 @@ public class ProjectController : Controller
         return Ok(project);
     }
 
+    [Authorize]
     [HttpPost("CreateProject")]
     public IActionResult CreateProject([FromBody] Project newProject)
     {
@@ -48,6 +52,7 @@ public class ProjectController : Controller
         return CreatedAtAction(nameof(GetProjectById), new { id = newProject.Id }, newProject);
     }
 
+    [Authorize]
     [HttpPut("UpdateProject/{id}")]
     public IActionResult UpdateProject(int id, [FromBody] Project updatedProject)
     {
@@ -61,6 +66,7 @@ public class ProjectController : Controller
         return NoContent();
     }
 
+    [Authorize]
     [HttpDelete("DeleteProject/{id}")]
     public IActionResult DeleteProject(int id)
     {

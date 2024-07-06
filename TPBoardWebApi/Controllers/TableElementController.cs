@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
@@ -14,14 +15,14 @@ public class TableElementController : Controller
     {
         _tableElementService = tableElementService;
     }
-
+    [Authorize]
     [HttpGet("GetAllElements")]
     public IActionResult GetAllElements()
     {
         var elements = _tableElementService.GetAllTableElements();
         return Ok(elements);
     }
-
+    [Authorize]
     [HttpGet("GetElementById/{id}")]
     public IActionResult GetElementById(int id)
     {
@@ -34,7 +35,7 @@ public class TableElementController : Controller
 
         return Ok(element);
     }
-
+    [Authorize]
     [HttpPost("CreateElement")]
     public IActionResult CreateElement([FromBody] TableElement newElement)
     {
@@ -47,7 +48,7 @@ public class TableElementController : Controller
 
         return CreatedAtAction(nameof(GetElementById), new { id = newElement.Id }, newElement);
     }
-
+    [Authorize]
     [HttpPut("UpdateElement/{id}")]
     public IActionResult UpdateElement(int id, [FromBody] TableElement updatedElement)
     {
@@ -60,7 +61,7 @@ public class TableElementController : Controller
 
         return NoContent();
     }
-
+    [Authorize]
     [HttpDelete("DeleteElement/{id}")]
     public IActionResult DeleteElement(int id)
     {

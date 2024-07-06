@@ -1,31 +1,30 @@
-<form [formGroup]="registerForm" (ngSubmit)="onRegister()">
-  <mat-form-field appearance="fill">
-    <mat-label>Login</mat-label>
-    <input matInput formControlName="login">
-    <mat-error *ngIf="registerForm.get('login')?.errors?.['required']">Login is required</mat-error>
-  </mat-form-field>
+<div class="register-container">
+  <mat-card class="register-card">
+    <mat-card-title>Register</mat-card-title>
+    <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
+      <mat-form-field appearance="fill" class="register-form-field">
+        <mat-label>Login</mat-label>
+        <input matInput formControlName="login">
+        <mat-error *ngIf="registerForm.get('login')?.errors?.['required']">Login is required</mat-error>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Email</mat-label>
-    <input matInput formControlName="email">
-    <mat-error *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</mat-error>
-    <mat-error *ngIf="registerForm.get('email')?.errors?.['email']">Enter a valid email</mat-error>
-  </mat-form-field>
+      <mat-form-field appearance="fill" class="register-form-field">
+        <mat-label>Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="registerForm.get('email')?.errors?.['required']">Email is required</mat-error>
+        <mat-error *ngIf="registerForm.get('email')?.errors?.['email']">Enter a valid email</mat-error>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Password</mat-label>
-    <input matInput formControlName="password" type="password">
-    <mat-error *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</mat-error>
-    <mat-error *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</mat-error>
-  </mat-form-field>
+      <mat-form-field appearance="fill" class="register-form-field">
+        <mat-label>Password</mat-label>
+        <input matInput formControlName="password" type="password">
+        <mat-error *ngIf="registerForm.get('password')?.errors?.['required']">Password is required</mat-error>
+        <mat-error *ngIf="registerForm.get('password')?.errors?.['minlength']">Password must be at least 8 characters long</mat-error>
+      </mat-form-field>
 
-  <mat-form-field appearance="fill">
-    <mat-label>Name</mat-label>
-    <input matInput formControlName="name">
-    <mat-error *ngIf="registerForm.get('name')?.errors?.['required']">Name is required</mat-error>
-  </mat-form-field>
+      <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
-  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-
-  <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Register</button>
-</form>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Register</button>
+    </form>
+  </mat-card>
+</div>

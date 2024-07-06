@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
@@ -14,14 +15,14 @@ public class TableController : Controller
     {
         _tableService = tableService;
     }
-
+    [Authorize]
     [HttpGet("GetAllTables")]
     public IActionResult GetAllTables()
     {
         var tables = _tableService.GetAllTables();
         return Ok(tables);
     }
-
+    [Authorize]
     [HttpGet("GetTableById/{id}")]
     public IActionResult GetTableById(int id)
     {
@@ -34,7 +35,7 @@ public class TableController : Controller
 
         return Ok(table);
     }
-
+    [Authorize]
     [HttpPost("CreateTable")]
     public IActionResult CreateTable([FromBody] Table newTable)
     {
@@ -47,7 +48,7 @@ public class TableController : Controller
 
         return CreatedAtAction(nameof(GetTableById), new { id = newTable.Id }, newTable);
     }
-
+    [Authorize]
     [HttpPut("UpdateTable/{id}")]
     public IActionResult UpdateTable(int id, [FromBody] Table updatedTable)
     {
@@ -60,7 +61,7 @@ public class TableController : Controller
 
         return NoContent();
     }
-
+    [Authorize]
     [HttpDelete("DeleteTable/{id}")]
     public IActionResult DeleteTable(int id)
     {

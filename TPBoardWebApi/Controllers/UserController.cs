@@ -5,6 +5,7 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
+using Microsoft.AspNetCore.Authorization;
 
 namespace TPBoardWebApi.Controllers
 {
@@ -62,14 +63,14 @@ namespace TPBoardWebApi.Controllers
             return BadRequest("Username or password is incorrect");
         }
 
-
+        [Authorize]
         [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
             var users = _userService.GetAllUsers();
             return Ok(users);
         }
-
+        [Authorize]
         [HttpGet("GetUserById/{id}")]
         public IActionResult GetUserById(int id)
         {
@@ -80,7 +81,7 @@ namespace TPBoardWebApi.Controllers
             }
             return Ok(user);
         }
-
+        [Authorize]
         [HttpPut("UpdateUser/{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User updatedUser)
         {
@@ -92,7 +93,7 @@ namespace TPBoardWebApi.Controllers
             _userService.UpdateUser(updatedUser);
             return NoContent();
         }
-
+        [Authorize]
         [HttpDelete("DeleteUser/{id}")]
         public IActionResult DeleteUser(int id)
         {
@@ -117,8 +118,10 @@ namespace TPBoardWebApi.Controllers
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Login)
         }),
-                Expires = DateTime.UtcNow.AddSeconds(30),
-                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
+                Expires = DateTime.UtcNow.AddDays(7),
+                SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
+                Issuer = _configuration["Jwt:Issuer"],
+                Audience = _configuration["Jwt:Audience"]
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);

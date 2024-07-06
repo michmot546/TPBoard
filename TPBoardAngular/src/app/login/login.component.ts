@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AuthService } from '../services';
@@ -8,14 +8,21 @@ import { AuthService } from '../services';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent {
+export class LoginComponent implements OnInit{
   loginForm: FormGroup;
+  isAuthenticated: boolean = false;
 
   constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {
     this.loginForm = this.fb.group({
       login: ['', Validators.required],
       password: ['', Validators.required]
     });
+  }
+  ngOnInit(): void {
+    this.isAuthenticated = this.authService.isAuthenticated();
+    if(this.isAuthenticated==true){
+      this.router.navigate(['/board']);
+    }
   }
 
   onLogin() {

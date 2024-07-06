@@ -1,50 +1,27 @@
-.mat-drawer-container {
-    width: 100%;
+.sidebar-container {
     height: 100%;
-    margin: 20px, 20px, 20px, 20px;
-    background-color: cornsilk;
-}
-.mat-drawer{
-    background-color: #335C81;
+  }
+  
+  .sidebar-drawer {
+    background-color: #3f51b5;
     border-right: 2px solid #1E3A53;
-}
-.mat-list-item{
-    width: max-content;
-}
-.mat-drawer button{
-    color: black;
-    width: fit-content;
+    padding-top: 12px;
+  }
+  
+  .mat-list-item {
+    width: 100%;
+  }
+  
+  .sidebar-drawer button {
+    color: white;
+    width: 100%;
     height: max-content;
     cursor: pointer;
     transition: background-color 0.3s ease;
-}
-.mat-drawer button:hover{
- 
-    color: black;
-}
-
-
-
-.cdk-drag-preview {
-    box-sizing: border-box;
-    border-radius: 4px;
-    box-shadow: 0 5px 5px -3px rgba(0, 0, 0, 0.2),
-        0 8px 10px 1px rgba(0, 0, 0, 0.14),
-        0 3px 14px 2px rgba(0, 0, 0, 0.12);
-}
-
-.cdk-drag-placeholder {
-    opacity: 0;
-}
-
-.cdk-drag-animating {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
-
-.example-box:last-child {
-    border: none;
-}
-
-.example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
-    transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
-}
+  }
+  
+  .sidebar-drawer button:hover {
+    background-color: #1E3A53;
+    color: white;
+  }
+  
