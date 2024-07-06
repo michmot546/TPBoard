@@ -10,7 +10,7 @@ import { AuthService } from '../services';
 })
 export class RegisterComponent {
   registerForm: FormGroup;
-
+  errorMessage: string = '';
   constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {
     this.registerForm = this.fb.group({
       login: ['', Validators.required],
@@ -28,6 +28,12 @@ export class RegisterComponent {
           this.router.navigate(['/board']);
         },
         error: (err) => {
+          if (err.status === 409) {
+            // Handle conflict error for existing login or email
+            this.errorMessage = err.error;
+          } else {
+            this.errorMessage = 'Registration failed';
+          }
           console.error('Registration failed', err);
         }
       });

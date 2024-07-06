@@ -34,6 +34,11 @@ namespace TPBoardWebApi.Controllers
                 return Conflict("A user with this login already exists.");
             }
 
+            if (_userService.EmailExists(newUser.Email))
+            {
+                return Conflict("A user with this email already exists.");
+            }
+
             _userService.CreateUser(newUser);
             var token = GenerateJwtToken(newUser);
             return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, new { token });
@@ -112,7 +117,7 @@ namespace TPBoardWebApi.Controllers
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
                     new Claim(ClaimTypes.Name, user.Login)
         }),
-                Expires = DateTime.UtcNow.AddDays(7),
+                Expires = DateTime.UtcNow.AddSeconds(30),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature)
             };
             var token = tokenHandler.CreateToken(tokenDescriptor);

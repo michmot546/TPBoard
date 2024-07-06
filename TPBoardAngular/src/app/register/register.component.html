@@ -1,8 +1,8 @@
 <form [formGroup]="registerForm" (ngSubmit)="onRegister()">
   <mat-form-field appearance="fill">
-    <mat-label>Username</mat-label>
+    <mat-label>Login</mat-label>
     <input matInput formControlName="login">
-    <mat-error *ngIf="registerForm.get('login')?.errors?.['required']">Username is required</mat-error>
+    <mat-error *ngIf="registerForm.get('login')?.errors?.['required']">Login is required</mat-error>
   </mat-form-field>
 
   <mat-form-field appearance="fill">
@@ -24,6 +24,8 @@
     <input matInput formControlName="name">
     <mat-error *ngIf="registerForm.get('name')?.errors?.['required']">Name is required</mat-error>
   </mat-form-field>
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
 
   <button mat-raised-button color="primary" type="submit" [disabled]="!registerForm.valid">Register</button>
 </form>

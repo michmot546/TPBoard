@@ -61,5 +61,10 @@ namespace TPBoardWebApi.Services
         {
             return _unitOfWork.Users.Any(u => u.Login == login);
         }
+
+        public bool EmailExists(string emial)
+        {
+            return _unitOfWork.Users.Any(u => u.Email == emial);
+        }
     }
 }

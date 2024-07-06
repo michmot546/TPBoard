@@ -1,4 +1,5 @@
 ﻿using TPBoardWebApi.Models;
+using TPBoardWebApi.Repositories;
 
 namespace TPBoardWebApi.Interfaces
 {
@@ -12,5 +13,7 @@ namespace TPBoardWebApi.Interfaces
         void UpdateUser(User user);
         void DeleteUser(int id);
         bool UserExists(string login);
+        public bool EmailExists(string emial);
+        
     }
 }
