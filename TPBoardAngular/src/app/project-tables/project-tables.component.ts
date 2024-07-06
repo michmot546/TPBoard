@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { TableService } from '../services/table.service';
+import { TableElementService } from '../services/table-element.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { Table } from '../interfaces/table.model';
 import { TableElement } from '../interfaces/tableelement.model';
-import { TableElementService } from '../services/table-element.service';
 
 @Component({
   selector: 'app-project-tables',
@@ -14,11 +14,12 @@ import { TableElementService } from '../services/table-element.service';
 export class ProjectTablesComponent implements OnInit {
   tables: Table[] = [];
   projectId: number;
+  connectedDropLists: string[] = [];
 
   constructor(
-    private tableElementService: TableElementService,
     private route: ActivatedRoute,
-    private tableService: TableService
+    private tableService: TableService,
+    private tableElementService: TableElementService
   ) {
     this.projectId = +this.route.snapshot.params['id'];
   }
@@ -34,7 +35,8 @@ export class ProjectTablesComponent implements OnInit {
         this.tables.forEach(table => {
           this.tableElementService.getTableElementsByTableId(table.id).subscribe({
             next: elements => {
-              table.elements = elements;
+              table.elements = elements || [];
+              this.connectedDropLists.push(`list-${table.id}`);
             },
             error: err => {
               console.error(`Failed to fetch elements for table ID ${table.id}:`, err);
@@ -48,7 +50,7 @@ export class ProjectTablesComponent implements OnInit {
     });
   }
 
-  drop(event: CdkDragDrop<TableElement[]>): void {
+  drop(event: CdkDragDrop<TableElement[]>, table: Table): void {
     if (event.previousContainer === event.container) {
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -58,6 +60,17 @@ export class ProjectTablesComponent implements OnInit {
         event.previousIndex,
         event.currentIndex
       );
+      const movedElement = event.container.data[event.currentIndex];
+      movedElement.tableId = table.id; // Update the tableId for the moved element
+      this.tableElementService.updateTableElement(movedElement).subscribe({
+        next: () => console.log(`Updated element ID ${movedElement.id}`),
+        error: err => console.error(`Failed to update element ID ${movedElement.id}:`, err)
+      });
     }
+
+    this.tableService.updateTable(table).subscribe({
+      next: () => console.log(`Updated table ID ${table.id}`),
+      error: err => console.error(`Failed to update table ID ${table.id}:`, err)
+    });
   }
 }

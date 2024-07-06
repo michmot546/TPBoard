@@ -28,8 +28,8 @@ export class TableElementService {
   }
 
   updateTableElement(tableElement: TableElement): Observable<TableElement> {
-    return this.http.put<TableElement>(`${this.apiUrl}/UpdateTableElement/${tableElement.id}`, tableElement);
-  }
+    return this.http.put<TableElement>(`${this.apiUrl}/UpdateElement/${tableElement.id}`, tableElement);
+  }  
 
   deleteTableElement(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/DeleteTableElement/${id}`);

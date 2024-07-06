@@ -18,9 +18,11 @@ export class TableService {
   getTableById(id: number): Observable<Table> {
     return this.http.get<Table>(`${this.apiUrl}/GetTableById/${id}`);
   }
+
   getTablesByProjectId(projectId: number): Observable<Table[]> {
     return this.http.get<Table[]>(`${this.apiUrl}/GetTablesByProjectId/${projectId}`);
   }
+
   createTable(table: Table): Observable<Table> {
     return this.http.post<Table>(`${this.apiUrl}/CreateTable`, table); 
   }
