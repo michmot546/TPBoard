@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
-import { Router } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { AuthService } from '../services';
 
 @Component({
@@ -8,31 +8,40 @@ import { AuthService } from '../services';
   templateUrl: './login.component.html',
   styleUrls: ['./login.component.css']
 })
-export class LoginComponent implements OnInit{
+export class LoginComponent implements OnInit {
   loginForm: FormGroup;
   isAuthenticated: boolean = false;
-
-  constructor(private authService: AuthService, private fb: FormBuilder, private router: Router) {
+  errorMessage: string | null = null;
+  
+  constructor(
+    private authService: AuthService,
+    private fb: FormBuilder,
+    private route: ActivatedRoute,
+    private router: Router  // Inject the Router service
+  ) {
     this.loginForm = this.fb.group({
       login: ['', Validators.required],
       password: ['', Validators.required]
     });
   }
+
   ngOnInit(): void {
-    this.isAuthenticated = this.authService.isAuthenticated();
-    if(this.isAuthenticated==true){
-      this.router.navigate(['/board']);
-    }
+    this.route.queryParams.subscribe(params => {
+      if (params['notAuthenticated']) {
+        this.errorMessage = 'You must be logged in to access this page.';
+      }
+    });
   }
 
   onLogin() {
     if (this.loginForm.valid) {
       this.authService.login(this.loginForm.value).subscribe({
         next: () => {
-          this.router.navigate(['/board']);
+          this.router.navigate(['/board']);  // Use the Router service to navigate
         },
         error: (err) => {
           console.error('Login failed', err);
+          this.errorMessage = 'Invalid login or password.';
         }
       });
     }
