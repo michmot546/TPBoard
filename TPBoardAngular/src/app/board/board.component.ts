@@ -1,5 +1,3 @@
-// board.component.ts
-
 import { Component, OnInit } from '@angular/core';
 import { ProjectService } from '../services/project.service';
 import { AuthService } from '../services/auth.service';
@@ -14,18 +12,17 @@ import { UserService } from '../services/user.service';
 })
 export class BoardComponent implements OnInit {
   isAuthenticated: boolean = false;
-  projects: Project[] = [];
-  owners: { [key: number]: User } = {};  // Object to hold owner details
+  projects: (Project & { editing: boolean })[] = [];
+  owners: { [key: number]: User } = {};
 
-  constructor(private projectService: ProjectService, private userService: UserService ,public authService: AuthService) { }
+  constructor(private projectService: ProjectService, private userService: UserService, public authService: AuthService) { }
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
     if (this.isAuthenticated) {
       this.projectService.getUserProjects().subscribe({
         next: projects => {
-          this.projects = projects;
-          console.log('User projects:', projects);
+          this.projects = projects.map(project => ({ ...project, editing: false }));
           this.fetchOwners();
         },
         error: err => {
@@ -52,5 +49,21 @@ export class BoardComponent implements OnInit {
 
   getOwnerName(ownerId: number): string {
     return this.owners[ownerId]?.name || 'Unknown';
+  }
+
+  toggleEdit(project: Project & { editing: boolean }): void {
+    if (project.editing) {
+      this.projectService.updateProject(project).subscribe({
+        next: () => {
+          project.editing = false;
+          console.log('Project updated successfully');
+        },
+        error: err => {
+          console.error('Failed to update project', err);
+        }
+      });
+    } else {
+      project.editing = true;
+    }
   }
 }

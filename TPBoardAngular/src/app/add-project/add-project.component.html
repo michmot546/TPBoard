@@ -1,0 +1,13 @@
+<mat-card class="add-project-card">
+    <mat-card-title>Add New Project</mat-card-title>
+    <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
+      <mat-form-field appearance="fill" class="form-field">
+        <mat-label>Project Name</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="projectForm.get('name')?.errors?.['required']">Project name is required</mat-error>
+      </mat-form-field>
+      
+      <button mat-raised-button color="primary" type="submit" [disabled]="!projectForm.valid">Create Project</button>
+    </form>
+</mat-card>
+  

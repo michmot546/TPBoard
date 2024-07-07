@@ -52,6 +52,15 @@ export class AuthService {
     return false;
   }
 
+  getCurrentUserId(): number | null {
+    const token = this.getToken();
+    if (token) {
+      const decoded: any = jwtDecode(token);
+      return decoded.nameid;
+    }
+    return null;
+  }
+
   private handleError(error: HttpErrorResponse) {
     if (error.status === 401) {
       this.logout();

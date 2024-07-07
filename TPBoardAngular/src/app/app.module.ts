@@ -36,6 +36,7 @@ import { AuthInterceptor } from './services/auth-interceptor.service';
 import { ProjectTablesComponent } from './project-tables/project-tables.component';
 import { TableService } from './services/table.service';
 import { TableElementService } from './services/table-element.service';
+import { AddProjectComponent } from './add-project/add-project.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -47,6 +48,7 @@ import { TableElementService } from './services/table-element.service';
     LoginComponent,
     RegisterComponent,
     ProjectTablesComponent,
+    AddProjectComponent,
   ],
   imports: [
     BrowserModule,

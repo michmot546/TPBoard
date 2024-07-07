@@ -33,10 +33,10 @@ export class ProjectTablesComponent implements OnInit {
       next: tables => {
         this.tables = tables;
         this.tables.forEach(table => {
-          table.elements = table.elements || []; // Ensure elements is always an array
+          table.elements = table.elements || [];
           this.tableElementService.getTableElementsByTableId(table.id).subscribe({
             next: elements => {
-              console.log(`Elements for table ID ${table.id}:`, elements);
+              //console.log(`Elements for table ID ${table.id}:`, elements);
               table.elements = elements || [];
               this.connectedDropLists.push(`list-${table.id}`);
             },
@@ -66,15 +66,14 @@ export class ProjectTablesComponent implements OnInit {
       const movedElement = event.container.data[event.currentIndex];
       movedElement.tableId = table.id; // Update the tableId for the moved element
       this.tableElementService.updateTableElement(movedElement).subscribe({
-        next: () => console.log(`Updated element ID ${movedElement.id}`),
-        error: err => console.error(`Failed to update element ID ${movedElement.id}:`, err)
+        //next: () => console.log(`Updated element ID ${movedElement.id}`),
+        //error: err => console.error(`Failed to update element ID ${movedElement.id}:`, err)
       });
     }
 
-    // Update the table in the backend
     this.tableService.updateTable(table).subscribe({
-      next: () => console.log(`Updated table ID ${table.id}`),
-      error: err => console.error(`Failed to update table ID ${table.id}:`, err)
+      //next: () => console.log(`Updated table ID ${table.id}`),
+      //error: err => console.error(`Failed to update table ID ${table.id}:`, err)
     });
   }
 }
