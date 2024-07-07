@@ -8,6 +8,8 @@ namespace TPBoardWebApi.Interfaces
         IRepository<Table> Tables { get; }
         IRepository<TableElement> TableElements{ get; }
         IRepository<User> Users{ get; }
+        IRepository<ProjectUser> ProjectUsers { get; }
+
         void Save();
     }
 }

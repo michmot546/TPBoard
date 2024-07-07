@@ -15,7 +15,7 @@ namespace TPBoardWebApi.Models
         public string Name { get; set; }
         public int OwnerId { get; set; }
         [JsonIgnore]
-        public ICollection<ProjectUser>? Users { get; set; }
+        public ICollection<ProjectUser> Users { get; set; }
         public ICollection<Table>? Tables { get; set; } = null;
     }
 }

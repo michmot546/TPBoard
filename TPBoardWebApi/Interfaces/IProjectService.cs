@@ -10,5 +10,7 @@ namespace TPBoardWebApi.Interfaces
         void UpdateProject(Project project);
         void DeleteProject(int id);
         public IEnumerable<Project> GetProjectsByUserId(int userId);
+        IEnumerable<User> GetProjectMembers(int projectId);
+
     }
 }

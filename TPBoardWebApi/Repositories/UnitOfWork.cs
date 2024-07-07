@@ -16,12 +16,14 @@ namespace TPBoardWebApi.Repositories
             Tables = new TableRepository(_context);
             Users = new UserRepository(_context);
             TableElements = new TableElementRepository(_context);
+            ProjectUsers = new ProjectUserRepository(_context);
         }
 
         public IRepository<Project> Projects { get; set; }
         public IRepository<Table> Tables { get; set; }
         public IRepository<TableElement> TableElements { get; set; }
         public IRepository<User> Users { get; set; }
+        public IRepository<ProjectUser> ProjectUsers { get; private set; }
 
         protected virtual void Dispose(bool disposing)
         {

@@ -5,7 +5,7 @@
 namespace TPBoardWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class test : Migration
+    public partial class ProjectUserFix : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -63,12 +63,12 @@ namespace TPBoardWebApi.Migrations
                 name: "ProjectUser",
                 columns: table => new
                 {
-                    UsertId = table.Column<int>(type: "int", nullable: false),
+                    UserId = table.Column<int>(type: "int", nullable: false),
                     ProjectId = table.Column<int>(type: "int", nullable: false)
                 },
                 constraints: table =>
                 {
-                    table.PrimaryKey("PK_ProjectUser", x => new { x.ProjectId, x.UsertId });
+                    table.PrimaryKey("PK_ProjectUser", x => new { x.ProjectId, x.UserId });
                     table.ForeignKey(
                         name: "FK_ProjectUser_Projects_ProjectId",
                         column: x => x.ProjectId,
@@ -76,8 +76,8 @@ namespace TPBoardWebApi.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_ProjectUser_Users_UsertId",
-                        column: x => x.UsertId,
+                        name: "FK_ProjectUser_Users_UserId",
+                        column: x => x.UserId,
                         principalTable: "Users",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
@@ -104,9 +104,9 @@ namespace TPBoardWebApi.Migrations
                 });
 
             migrationBuilder.CreateIndex(
-                name: "IX_ProjectUser_UsertId",
+                name: "IX_ProjectUser_UserId",
                 table: "ProjectUser",
-                column: "UsertId");
+                column: "UserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TableElements_TableId",

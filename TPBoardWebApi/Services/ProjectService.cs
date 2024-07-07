@@ -47,8 +47,21 @@ namespace TPBoardWebApi.Services
         public IEnumerable<Project> GetProjectsByUserId(int userId)
         {
             return _unitOfWork.Projects
-                              .Find(p => p.OwnerId == userId || p.Users.Any(u => u.UsertId == userId))
+                              .Find(p => p.OwnerId == userId || p.Users.Any(u => u.UserId == userId))
                               .ToList();
+        }
+
+        public IEnumerable<User> GetProjectMembers(int projectId)
+        {
+            var project = _unitOfWork.Projects.GetById(projectId);
+            if (project == null)
+            {
+                throw new KeyNotFoundException("Project not found");
+            }
+
+            var projectUsers = _unitOfWork.ProjectUsers.Find(pu => pu.ProjectId == projectId);
+            var users = projectUsers.Select(pu => pu.User).ToList();
+            return users;
         }
     }
 }

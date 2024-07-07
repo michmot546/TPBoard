@@ -12,8 +12,8 @@ using TPBoardWebApi.Data;
 namespace TPBoardWebApi.Migrations
 {
     [DbContext(typeof(TPBoardDbContext))]
-    [Migration("20240501140052_test")]
-    partial class test
+    [Migration("20240707150822_ProjectUserFix")]
+    partial class ProjectUserFix
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -50,14 +50,14 @@ namespace TPBoardWebApi.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsertId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProjectId", "UsertId");
+                    b.HasKey("ProjectId", "UserId");
 
-                    b.HasIndex("UsertId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("ProjectUser");
+                    b.ToTable("ProjectUser", (string)null);
                 });
 
             modelBuilder.Entity("TPBoardWebApi.Models.Table", b =>
@@ -143,7 +143,7 @@ namespace TPBoardWebApi.Migrations
 
                     b.HasOne("TPBoardWebApi.Models.User", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("UsertId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

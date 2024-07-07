@@ -47,14 +47,14 @@ namespace TPBoardWebApi.Migrations
                     b.Property<int>("ProjectId")
                         .HasColumnType("int");
 
-                    b.Property<int>("UsertId")
+                    b.Property<int>("UserId")
                         .HasColumnType("int");
 
-                    b.HasKey("ProjectId", "UsertId");
+                    b.HasKey("ProjectId", "UserId");
 
-                    b.HasIndex("UsertId");
+                    b.HasIndex("UserId");
 
-                    b.ToTable("ProjectUser");
+                    b.ToTable("ProjectUser", (string)null);
                 });
 
             modelBuilder.Entity("TPBoardWebApi.Models.Table", b =>
@@ -140,7 +140,7 @@ namespace TPBoardWebApi.Migrations
 
                     b.HasOne("TPBoardWebApi.Models.User", "User")
                         .WithMany("Projects")
-                        .HasForeignKey("UsertId")
+                        .HasForeignKey("UserId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 

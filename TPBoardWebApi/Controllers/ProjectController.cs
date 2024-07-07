@@ -93,4 +93,19 @@ public class ProjectController : Controller
         return NoContent();
     }
 
+    [Authorize]
+    [HttpGet("GetProjectMembers/{projectId}")]
+    public IActionResult GetProjectMembers(int projectId)
+    {
+        try
+        {
+            var members = _projectService.GetProjectMembers(projectId);
+            return Ok(members);
+        }
+        catch (KeyNotFoundException)
+        {
+            return NotFound();
+        }
+    }
+
 }

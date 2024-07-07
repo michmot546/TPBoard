@@ -11,23 +11,27 @@ namespace TPBoardWebApi.Data
         public DbSet<Project> Projects { get; set; }
         public DbSet<Table> Tables { get; set; }
         public DbSet<TableElement> TableElements { get; set; }
+        public DbSet<ProjectUser> ProjectUser { get; set; }
 
         public TPBoardDbContext(DbContextOptions<TPBoardDbContext> options) : base(options) { }
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<ProjectUser>()
-                .HasKey(pu => new { pu.ProjectId, pu.UsertId });
+                .HasKey(pu => new { pu.ProjectId, pu.UserId });
 
             modelBuilder.Entity<ProjectUser>()
                 .HasOne(pu => pu.Project)
-                .WithMany(pu => pu.Users)
+                .WithMany(p => p.Users)
                 .HasForeignKey(pu => pu.ProjectId);
 
             modelBuilder.Entity<ProjectUser>()
                 .HasOne(pu => pu.User)
-                .WithMany(pu => pu.Projects)
-                .HasForeignKey(pu => pu.UsertId);
+                .WithMany(u => u.Projects)
+                .HasForeignKey(pu => pu.UserId);
+
+            modelBuilder.Entity<ProjectUser>().ToTable("ProjectUser"); // Explicitly set table name
         }
+
     }
 }
