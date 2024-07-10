@@ -45,7 +45,7 @@ public class TableElementController : Controller
     }
 
     [Authorize]
-    [HttpPost("CreateElement")]
+    [HttpPost("CreateTableElement")]
     public IActionResult CreateElement([FromBody] TableElement newElement)
     {
         if (newElement == null)
@@ -58,7 +58,7 @@ public class TableElementController : Controller
         return CreatedAtAction(nameof(GetElementById), new { id = newElement.Id }, newElement);
     }
     [Authorize]
-    [HttpPut("UpdateElement/{id}")]
+    [HttpPut("UpdateTableElement/{id}")]
     public IActionResult UpdateElement(int id, [FromBody] TableElement updatedElement)
     {
         if (id != updatedElement.Id)
@@ -71,7 +71,7 @@ public class TableElementController : Controller
         return NoContent();
     }
     [Authorize]
-    [HttpDelete("DeleteElement/{id}")]
+    [HttpDelete("DeleteTableElement/{id}")]
     public IActionResult DeleteElement(int id)
     {
         var element = _tableElementService.GetTableElementById(id);

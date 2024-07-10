@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>Create New Element</h1>
+<div mat-dialog-content>
+  <form [formGroup]="elementForm" (ngSubmit)="onSubmit()">
+    <mat-form-field>
+      <mat-label>Element Name</mat-label>
+      <input matInput formControlName="name">
+      <mat-error *ngIf="elementForm.get('name')?.hasError('required')">
+        Element name is required
+      </mat-error>
+    </mat-form-field>
+    <div mat-dialog-actions>
+      <button mat-button type="button" (click)="onCancel()">Cancel</button>
+      <button mat-button type="submit" [disabled]="!elementForm.valid">Create</button>
+    </div>
+  </form>
+</div>

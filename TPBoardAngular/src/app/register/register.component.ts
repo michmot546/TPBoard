@@ -30,7 +30,6 @@ export class RegisterComponent implements OnInit {
     if (this.registerForm.valid) {
       this.authService.register(this.registerForm.value).subscribe({
         next: () => {
-          // Redirect to board after successful registration
           this.router.navigate(['/board']);
         },
         error: (err) => {

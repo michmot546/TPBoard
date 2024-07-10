@@ -37,6 +37,9 @@ import { ProjectTablesComponent } from './project-tables/project-tables.componen
 import { TableService } from './services/table.service';
 import { TableElementService } from './services/table-element.service';
 import { AddProjectComponent } from './add-project/add-project.component';
+import { CreateTableDialogComponent } from './create-table-dialog/create-table-dialog.component';
+import { MatDialogModule } from '@angular/material/dialog';
+import { CreateElementDialogComponent } from './create-element-dialog/create-element-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -49,6 +52,8 @@ import { AddProjectComponent } from './add-project/add-project.component';
     RegisterComponent,
     ProjectTablesComponent,
     AddProjectComponent,
+    CreateTableDialogComponent,
+    CreateElementDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -72,6 +77,7 @@ import { AddProjectComponent } from './add-project/add-project.component';
     FormsModule,
     MatCardModule,
     MatToolbarModule,
+    MatDialogModule,
   ],
   exports: [RouterModule],
   providers: [

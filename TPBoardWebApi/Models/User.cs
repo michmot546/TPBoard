@@ -24,6 +24,6 @@ namespace TPBoardWebApi.Models
         public string Email { get; set; }
 
         [JsonIgnore]
-        public ICollection<ProjectUser> Projects { get; set; }
+        public ICollection<ProjectUser>? Projects { get; set; }
     }
 }
