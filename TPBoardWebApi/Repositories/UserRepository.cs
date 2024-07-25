@@ -1,4 +1,5 @@
-﻿using System.Linq.Expressions;
+﻿using Microsoft.EntityFrameworkCore;
+using System.Linq.Expressions;
 using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
@@ -32,7 +33,7 @@ namespace TPBoardWebApi.Repositories
 
         public IEnumerable<User> Find(Expression<Func<User, bool>> predicate)
         {
-            throw new NotImplementedException();
+            return _context.Users.Where(predicate).ToList();
         }
 
         public User FirstOrDefault(Expression<Func<User, bool>> predicate)

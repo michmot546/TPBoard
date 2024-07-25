@@ -5,7 +5,7 @@
 namespace TPBoardWebApi.Migrations
 {
     /// <inheritdoc />
-    public partial class ProjectUserFix : Migration
+    public partial class assignuser : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
@@ -90,7 +90,8 @@ namespace TPBoardWebApi.Migrations
                     Id = table.Column<int>(type: "int", nullable: false)
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Name = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    TableId = table.Column<int>(type: "int", nullable: false)
+                    TableId = table.Column<int>(type: "int", nullable: false),
+                    AssignedUserId = table.Column<int>(type: "int", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -101,12 +102,22 @@ namespace TPBoardWebApi.Migrations
                         principalTable: "Tables",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
+                    table.ForeignKey(
+                        name: "FK_TableElements_Users_AssignedUserId",
+                        column: x => x.AssignedUserId,
+                        principalTable: "Users",
+                        principalColumn: "Id");
                 });
 
             migrationBuilder.CreateIndex(
                 name: "IX_ProjectUser_UserId",
                 table: "ProjectUser",
                 column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_TableElements_AssignedUserId",
+                table: "TableElements",
+                column: "AssignedUserId");
 
             migrationBuilder.CreateIndex(
                 name: "IX_TableElements_TableId",
@@ -129,10 +140,10 @@ namespace TPBoardWebApi.Migrations
                 name: "TableElements");
 
             migrationBuilder.DropTable(
-                name: "Users");
+                name: "Tables");
 
             migrationBuilder.DropTable(
-                name: "Tables");
+                name: "Users");
 
             migrationBuilder.DropTable(
                 name: "Projects");

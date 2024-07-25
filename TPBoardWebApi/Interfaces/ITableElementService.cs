@@ -12,5 +12,6 @@ namespace TPBoardWebApi.Interfaces
         void UpdateTableElement(TableElement element);
         void DeleteTableElement(int id);
         IEnumerable<TableElement> GetTableElementsByTableId(int tableId);
+        void AssignUserToTableElement(int tableElementId, int userId);
     }
 }

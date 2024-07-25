@@ -50,13 +50,15 @@ public class TableElementController : Controller
     {
         if (newElement == null)
         {
-            return BadRequest("Invalid element data");
+            return BadRequest("Invalid table element data");
         }
 
         _tableElementService.CreateTableElement(newElement);
 
         return CreatedAtAction(nameof(GetElementById), new { id = newElement.Id }, newElement);
     }
+
+
     [Authorize]
     [HttpPut("UpdateTableElement/{id}")]
     public IActionResult UpdateElement(int id, [FromBody] TableElement updatedElement)
@@ -83,6 +85,13 @@ public class TableElementController : Controller
 
         _tableElementService.DeleteTableElement(id);
 
+        return NoContent();
+    }
+    [Authorize]
+    [HttpPost("{tableElementId}/assign/{userId}")]
+    public IActionResult AssignUserToTableElement(int tableElementId, int userId)
+    {
+        _tableElementService.AssignUserToTableElement(tableElementId, userId);
         return NoContent();
     }
 }

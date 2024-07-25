@@ -9,5 +9,7 @@ namespace TPBoardWebApi.Models
         public int Id { get; set; }
         public string Name { get; set; }
         public int TableId { get; set; }
+        public int? AssignedUserId { get; set; }
+        //public User AssignedUser { get; set; }
     }
 }

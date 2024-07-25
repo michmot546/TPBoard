@@ -27,6 +27,7 @@ export class BoardComponent implements OnInit {
         },
         error: err => {
           console.error('Failed to fetch user projects:', err);
+          this.authService.logout();
         }
       });
     }
@@ -41,6 +42,7 @@ export class BoardComponent implements OnInit {
           },
           error: err => {
             console.error('Failed to fetch owner details:', err);
+            this.authService.logout();
           }
         });
       }

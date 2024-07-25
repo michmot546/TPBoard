@@ -8,6 +8,14 @@
         Element name is required
       </mat-error>
     </mat-form-field>
+    <mat-form-field>
+      <mat-label>Assign User</mat-label>
+      <mat-select formControlName="assignedUserId">
+        <mat-option [value]="null">None</mat-option>
+        <!-- Assuming you have a users array in the component -->
+        <mat-option *ngFor="let user of users" [value]="user.id">{{ user.name }}</mat-option>
+      </mat-select>
+    </mat-form-field>
     <div mat-dialog-actions>
       <button mat-button type="button" (click)="onCancel()">Cancel</button>
       <button mat-button type="submit" [disabled]="!elementForm.valid">Create</button>

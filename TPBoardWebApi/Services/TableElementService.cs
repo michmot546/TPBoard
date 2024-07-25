@@ -48,5 +48,17 @@ namespace TPBoardWebApi.Services
         {
             return _unitOfWork.TableElements.Find(te => te.TableId == tableId).ToList();
         }
+
+        public void AssignUserToTableElement(int tableElementId, int userId)
+        {
+            var tableElement = _unitOfWork.TableElements.GetById(tableElementId);
+            if (tableElement == null) throw new Exception("TableElement not found");
+
+            var user = _unitOfWork.Users.GetById(userId);
+            if (user == null) throw new Exception("User not found");
+
+            tableElement.AssignedUserId = userId;
+            _unitOfWork.Save();
+        }
     }
 }

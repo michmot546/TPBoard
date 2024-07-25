@@ -7,7 +7,7 @@ import { MatMenuModule } from '@angular/material/menu';
 import { MatButtonModule } from '@angular/material/button';
 import { MatSidenavModule} from '@angular/material/sidenav';
 import { NavbarComponent } from './navbar/navbar.component';
-import { MatListModule} from '@angular/material/list';
+import { MatListModule, MatSelectionList} from '@angular/material/list';
 import {
   CdkDragDrop,
   moveItemInArray,
@@ -40,6 +40,10 @@ import { AddProjectComponent } from './add-project/add-project.component';
 import { CreateTableDialogComponent } from './create-table-dialog/create-table-dialog.component';
 import { MatDialogModule } from '@angular/material/dialog';
 import { CreateElementDialogComponent } from './create-element-dialog/create-element-dialog.component';
+import { AssignUserDialogComponent } from './assign-user-dialog/assign-user-dialog.component';
+import { MatOptionModule } from '@angular/material/core';
+import {MatSelect, MatSelectModule} from '@angular/material/select'; 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -54,6 +58,7 @@ import { CreateElementDialogComponent } from './create-element-dialog/create-ele
     AddProjectComponent,
     CreateTableDialogComponent,
     CreateElementDialogComponent,
+    AssignUserDialogComponent,
   ],
   imports: [
     BrowserModule,
@@ -78,6 +83,8 @@ import { CreateElementDialogComponent } from './create-element-dialog/create-ele
     MatCardModule,
     MatToolbarModule,
     MatDialogModule,
+    MatOptionModule,
+    MatSelectModule,
   ],
   exports: [RouterModule],
   providers: [

@@ -59,9 +59,17 @@ namespace TPBoardWebApi.Services
                 throw new KeyNotFoundException("Project not found");
             }
 
-            var projectUsers = _unitOfWork.ProjectUsers.Find(pu => pu.ProjectId == projectId);
-            var users = projectUsers.Select(pu => pu.User).ToList();
+            var projectUsers = _unitOfWork.ProjectUsers.Find(pu => pu.ProjectId == projectId).ToList();
+
+            if (!projectUsers.Any())
+            {
+                throw new KeyNotFoundException("No users found for this project");
+            }
+            var userIds = projectUsers.Select(pu => pu.UserId).ToList();
+            var users = _unitOfWork.Users.Find(u => userIds.Contains(u.Id)).ToList();
+
             return users;
         }
+
     }
 }

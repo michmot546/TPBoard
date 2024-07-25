@@ -30,7 +30,8 @@ namespace TPBoardWebApi.Data
                 .WithMany(u => u.Projects)
                 .HasForeignKey(pu => pu.UserId);
 
-            modelBuilder.Entity<ProjectUser>().ToTable("ProjectUser"); // Explicitly set table name
+            modelBuilder.Entity<ProjectUser>().ToTable("ProjectUser");
+
         }
 
     }

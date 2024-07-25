@@ -20,4 +20,5 @@
 </div>
 <div *ngIf="!isAuthenticated">
   <p>You must be logged in to view your projects.</p>
+        <button mat-button [routerLink]="['/loginPage']">GO BACK</button>  
 </div>

@@ -75,10 +75,10 @@ namespace TPBoardWebApi.Repositories
         {
             _context.Tables.Update(entity);
             SaveChanges();
-        }
+        }/*
         public IEnumerable<Table> GetTablesByProjectId(int projectId)
         {
             return _context.Tables.Where(t => t.ProjectId == projectId).ToList();
-        }
+        }*/
     }
 }

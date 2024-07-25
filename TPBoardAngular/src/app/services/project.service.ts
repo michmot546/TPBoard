@@ -2,6 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Project } from '../interfaces/project.model';
+import { User } from '../interfaces/user.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,5 +32,8 @@ export class ProjectService {
 
   deleteProject(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/DeleteProject/${id}`); 
+  }
+  getProjectMembers(projectId: number): Observable<User[]> {
+    return this.http.get<User[]>(`${this.apiUrl}/GetProjectMembers/${projectId}`);
   }
 }

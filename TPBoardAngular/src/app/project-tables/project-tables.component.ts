@@ -8,6 +8,9 @@ import { Table } from '../interfaces/table.model';
 import { TableElement } from '../interfaces/tableelement.model';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { CreateElementDialogComponent } from '../create-element-dialog/create-element-dialog.component';
+import { AssignUserDialogComponent } from '../assign-user-dialog/assign-user-dialog.component';
+import { AuthService } from '../services/auth.service';
+import { ProjectService } from '../services/project.service';
 
 @Component({
   selector: 'app-project-tables',
@@ -23,13 +26,16 @@ export class ProjectTablesComponent implements OnInit {
     private route: ActivatedRoute,
     private tableService: TableService,
     private tableElementService: TableElementService,
-    public dialog: MatDialog
+    public dialog: MatDialog,
+    private authService: AuthService,
+    private projectService: ProjectService
   ) {
     this.projectId = +this.route.snapshot.params['id'];
   }
 
   ngOnInit(): void {
     this.loadTables();
+    console.log(this.projectService.getProjectMembers(this.projectId));
   }
 
   loadTables(): void {
@@ -40,21 +46,27 @@ export class ProjectTablesComponent implements OnInit {
           table.elements = table.elements || [];
           this.tableElementService.getTableElementsByTableId(table.id).subscribe({
             next: elements => {
-              console.log(`Elements for table ID ${table.id}:`, elements);
+              elements.forEach(element => {
+                if (element.assignedUserId) {
+                  this.projectService.getProjectMembers(this.projectId).subscribe({
+                    next: users => {
+                      element.assignedUser = users.find(user => user.id === element.assignedUserId);
+                    },
+                    error: err => console.error('Failed to fetch project members:', err)
+                  });
+                }
+              });
               table.elements = elements || [];
               this.connectedDropLists.push(`list-${table.id}`);
             },
-            error: err => {
-              console.error(`Failed to fetch elements for table ID ${table.id}:`, err);
-            }
+            error: err => console.error(`Failed to fetch elements for table ID ${table.id}:`, err)
           });
         });
       },
-      error: err => {
-        console.error('Failed to fetch tables:', err);
-      }
+      error: err => console.error('Failed to fetch tables:', err)
     });
   }
+  
 
   openCreateTableDialog(): void {
     const dialogRef = this.dialog.open(CreateTableDialogComponent, {
@@ -72,7 +84,7 @@ export class ProjectTablesComponent implements OnInit {
   openCreateElementDialog(table: Table): void {
     const dialogRef = this.dialog.open(CreateElementDialogComponent, {
       width: '250px',
-      data: { tableId: table.id }
+      data: { tableId: table.id, projectId: this.projectId }
     });
 
     dialogRef.afterClosed().subscribe(result => {
@@ -129,6 +141,38 @@ export class ProjectTablesComponent implements OnInit {
     this.tableService.updateTable(table).subscribe({
       next: () => console.log(`Updated table ID ${table.id}`),
       error: err => console.error(`Failed to update table ID ${table.id}:`, err)
+    });
+  }
+
+  takeTask(element: TableElement): void {
+    const currentUserId = this.authService.getCurrentUserId();
+    if (currentUserId) {
+      this.tableElementService.assignUserToTableElement(element.id, currentUserId).subscribe({
+        next: () => {
+          console.log(`Assigned user ID ${currentUserId} to element ID ${element.id}`);
+          this.loadTables();
+        },
+        error: err => console.error('Failed to assign user to element', err)
+      });
+    }
+  }
+
+  openAssignUserDialog(element: TableElement): void {
+    const dialogRef = this.dialog.open(AssignUserDialogComponent, {
+      width: '250px',
+      data: { projectId: this.projectId, elementId: element.id }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.tableElementService.assignUserToTableElement(element.id, result).subscribe({
+          next: () => {
+            console.log(`Assigned user ID ${result} to element ID ${element.id}`);
+            this.loadTables();
+          },
+          error: err => console.error('Failed to assign user to element', err)
+        });
+      }
     });
   }
 }

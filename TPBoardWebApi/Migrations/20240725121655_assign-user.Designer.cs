@@ -12,8 +12,8 @@ using TPBoardWebApi.Data;
 namespace TPBoardWebApi.Migrations
 {
     [DbContext(typeof(TPBoardDbContext))]
-    [Migration("20240710120425_fix")]
-    partial class fix
+    [Migration("20240725121655_assign-user")]
+    partial class assignuser
     {
         /// <inheritdoc />
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
@@ -90,6 +90,9 @@ namespace TPBoardWebApi.Migrations
 
                     SqlServerPropertyBuilderExtensions.UseIdentityColumn(b.Property<int>("Id"));
 
+                    b.Property<int?>("AssignedUserId")
+                        .HasColumnType("int");
+
                     b.Property<string>("Name")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
@@ -98,6 +101,8 @@ namespace TPBoardWebApi.Migrations
                         .HasColumnType("int");
 
                     b.HasKey("Id");
+
+                    b.HasIndex("AssignedUserId");
 
                     b.HasIndex("TableId");
 
@@ -163,11 +168,17 @@ namespace TPBoardWebApi.Migrations
 
             modelBuilder.Entity("TPBoardWebApi.Models.TableElement", b =>
                 {
+                    b.HasOne("TPBoardWebApi.Models.User", "AssignedUser")
+                        .WithMany()
+                        .HasForeignKey("AssignedUserId");
+
                     b.HasOne("TPBoardWebApi.Models.Table", null)
                         .WithMany("Elements")
                         .HasForeignKey("TableId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
+
+                    b.Navigation("AssignedUser");
                 });
 
             modelBuilder.Entity("TPBoardWebApi.Models.Project", b =>

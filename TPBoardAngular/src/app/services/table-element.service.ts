@@ -34,4 +34,7 @@ export class TableElementService {
   deleteTableElement(id: number): Observable<void> {
     return this.http.delete<void>(`${this.apiUrl}/DeleteTableElement/${id}`);
   }
+  assignUserToTableElement(tableElementId: number, userId: number | null): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/${tableElementId}/assign/${userId}`, {});
+  }
 }
