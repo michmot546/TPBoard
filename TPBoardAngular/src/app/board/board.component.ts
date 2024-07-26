@@ -68,4 +68,15 @@ export class BoardComponent implements OnInit {
       project.editing = true;
     }
   }
+  deleteProject(projectId: number): void {
+    this.projectService.deleteProject(projectId).subscribe({
+      next: () => {
+        this.projects = this.projects.filter(project => project.id !== projectId);
+        console.log('Project deleted successfully');
+      },
+      error: err => {
+        console.error('Failed to delete project', err);
+      }
+    });
+  }
 }

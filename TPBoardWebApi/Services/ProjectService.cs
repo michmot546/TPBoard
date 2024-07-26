@@ -28,6 +28,20 @@ namespace TPBoardWebApi.Services
             _unitOfWork.Save();
         }
 
+        public void CreateProjectWithOwnerAdded(Project project, int ownerId)
+        {
+            _unitOfWork.Projects.Add(project);
+            _unitOfWork.Save();
+
+            var projectUser = new ProjectUser
+            {
+                ProjectId = project.Id,
+                UserId = ownerId
+            };
+            _unitOfWork.ProjectUsers.Add(projectUser);
+            _unitOfWork.Save();
+        }
+
         public void UpdateProject(Project project)
         {
             _unitOfWork.Projects.Update(project);
@@ -71,5 +85,25 @@ namespace TPBoardWebApi.Services
             return users;
         }
 
+        public void AddUserToProject(int userId, int projectId)
+        {
+            var projectUser = new ProjectUser
+            {
+                UserId = userId,
+                ProjectId = projectId
+            };
+            _unitOfWork.ProjectUsers.Add(projectUser);
+            _unitOfWork.Save();
+        }
+
+        public void RemoveUserFromProject(int userId, int projectId)
+        {
+            var projectUser = _unitOfWork.ProjectUsers.FirstOrDefault(pu => pu.UserId == userId && pu.ProjectId == projectId);
+            if (projectUser != null)
+            {
+                _unitOfWork.ProjectUsers.Delete(projectUser);
+                _unitOfWork.Save();
+            }
+        }
     }
 }

@@ -5,6 +5,6 @@ export interface Project {
   id: number;
   name: string;
   ownerId: number;
-  users?: ProjectUser[];
+  users: ProjectUser[];
   tables?: Table[];
 }

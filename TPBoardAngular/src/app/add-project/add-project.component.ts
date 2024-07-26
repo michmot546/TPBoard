@@ -31,10 +31,11 @@ export class AddProjectComponent {
         const newProject: Project = {
           id: 0,
           name: this.projectForm.value.name,
-          ownerId: userId
+          ownerId: userId,
+          users: []
         };
 
-        this.projectService.createProject(newProject).subscribe({
+        this.projectService.createProjectWithOwnerAdded(newProject).subscribe({
           next: () => this.router.navigate(['/board']),
           error: err => console.error('Failed to create project', err)
         });

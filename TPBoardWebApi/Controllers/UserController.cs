@@ -107,6 +107,19 @@ namespace TPBoardWebApi.Controllers
             return NoContent();
         }
 
+        [Authorize]
+        [HttpGet("GetUserByName/{name}")]
+        public IActionResult GetUserByName(string name)
+        {
+            var user = _userService.GetUserByName(name);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(user);
+        }
+
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();

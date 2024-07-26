@@ -25,7 +25,9 @@ export class ProjectService {
   createProject(project: Project): Observable<Project> {
     return this.http.post<Project>(`${this.apiUrl}/CreateProject`, project);
   }
-
+  createProjectWithOwnerAdded(project: Project): Observable<Project> {
+    return this.http.post<Project>(`${this.apiUrl}/CreateProjectWithOwnerAdded`, project);
+  }
   updateProject(project: Project): Observable<Project> {
     return this.http.put<Project>(`${this.apiUrl}/UpdateProject/${project.id}`, project);
   }
@@ -35,5 +37,12 @@ export class ProjectService {
   }
   getProjectMembers(projectId: number): Observable<User[]> {
     return this.http.get<User[]>(`${this.apiUrl}/GetProjectMembers/${projectId}`);
+  }
+  addUserToProject(userId: number, projectId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/AddUserToProject`, { userId, projectId });
+  }
+
+  removeUserFromProject(userId: number, projectId: number): Observable<void> {
+    return this.http.post<void>(`${this.apiUrl}/RemoveUserFromProject`, { userId, projectId });
   }
 }

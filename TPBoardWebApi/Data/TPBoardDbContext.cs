@@ -32,6 +32,10 @@ namespace TPBoardWebApi.Data
 
             modelBuilder.Entity<ProjectUser>().ToTable("ProjectUser");
 
+            modelBuilder.Entity<User>()
+                .HasIndex(u => u.Name)
+                .IsUnique();
+
         }
 
     }

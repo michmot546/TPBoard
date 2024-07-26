@@ -42,8 +42,8 @@ import { MatDialogModule } from '@angular/material/dialog';
 import { CreateElementDialogComponent } from './create-element-dialog/create-element-dialog.component';
 import { AssignUserDialogComponent } from './assign-user-dialog/assign-user-dialog.component';
 import { MatOptionModule } from '@angular/material/core';
-import {MatSelect, MatSelectModule} from '@angular/material/select'; 
-
+import {MatSelectModule} from '@angular/material/select'; 
+import { MatTabsModule } from '@angular/material/tabs';
 @NgModule({
   declarations: [
     AppComponent,
@@ -85,6 +85,7 @@ import {MatSelect, MatSelectModule} from '@angular/material/select';
     MatDialogModule,
     MatOptionModule,
     MatSelectModule,
+    MatTabsModule
   ],
   exports: [RouterModule],
   providers: [

@@ -28,6 +28,10 @@ namespace TPBoardWebApi.Services
         {
             return _unitOfWork.Users.FirstOrDefault(u => u.Login == login);
         }
+        public User GetUserByName(string name)
+        {
+            return _unitOfWork.Users.FirstOrDefault(u => u.Name == name);
+        }
 
         public void CreateUser(User user)
         {

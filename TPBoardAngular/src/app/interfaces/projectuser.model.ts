@@ -2,7 +2,7 @@ import { Project } from "./project.model";
 import { User } from "./user.model";
 
 export interface ProjectUser {
-  usertId: number;
+  userId: number;
   user: User;
   projectId: number;
   project: Project;
