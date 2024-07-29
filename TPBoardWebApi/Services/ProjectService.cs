@@ -53,6 +53,12 @@ namespace TPBoardWebApi.Services
             var project = _unitOfWork.Projects.GetById(id);
             if (project != null)
             {
+                var relatedTables = _unitOfWork.Tables.Find(t => t.ProjectId == id).ToList();
+                foreach (var table in relatedTables)
+                {
+                    _unitOfWork.Tables.Delete(table);
+                }
+
                 _unitOfWork.Projects.Delete(project);
                 _unitOfWork.Save();
             }

@@ -35,7 +35,11 @@ namespace TPBoardWebApi.Data
             modelBuilder.Entity<User>()
                 .HasIndex(u => u.Name)
                 .IsUnique();
-
+            modelBuilder.Entity<Project>()
+            .HasMany(p => p.Tables)
+            .WithOne(t => t.Project)
+            .HasForeignKey(t => t.ProjectId)
+            .OnDelete(DeleteBehavior.Cascade);
         }
 
     }
