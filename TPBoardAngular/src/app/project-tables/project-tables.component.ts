@@ -11,6 +11,7 @@ import { CreateElementDialogComponent } from '../create-element-dialog/create-el
 import { AssignUserDialogComponent } from '../assign-user-dialog/assign-user-dialog.component';
 import { AuthService } from '../services/auth.service';
 import { ProjectService } from '../services/project.service';
+import { RoleService } from '../services/role.service';
 
 @Component({
   selector: 'app-project-tables',
@@ -21,6 +22,7 @@ export class ProjectTablesComponent implements OnInit {
   tables: Table[] = [];
   projectId: number;
   connectedDropLists: string[] = [];
+  userRole: string | null;
 
   constructor(
     private route: ActivatedRoute,
@@ -28,9 +30,11 @@ export class ProjectTablesComponent implements OnInit {
     private tableElementService: TableElementService,
     public dialog: MatDialog,
     private authService: AuthService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private roleService: RoleService
   ) {
     this.projectId = +this.route.snapshot.params['id'];
+    this.userRole = this.roleService.getCurrentUserRole();
   }
 
   ngOnInit(): void {
@@ -158,21 +162,27 @@ export class ProjectTablesComponent implements OnInit {
   }
 
   openAssignUserDialog(element: TableElement): void {
-    const dialogRef = this.dialog.open(AssignUserDialogComponent, {
-      width: '250px',
-      data: { projectId: this.projectId, elementId: element.id }
-    });
+    if (this.canMakeChanges()) {
+      const dialogRef = this.dialog.open(AssignUserDialogComponent, {
+        width: '250px',
+        data: { projectId: this.projectId, elementId: element.id }
+      });
 
-    dialogRef.afterClosed().subscribe(result => {
-      if (result) {
-        this.tableElementService.assignUserToTableElement(element.id, result).subscribe({
-          next: () => {
-            console.log(`Assigned user ID ${result} to element ID ${element.id}`);
-            this.loadTables();
-          },
-          error: err => console.error('Failed to assign user to element', err)
-        });
-      }
-    });
+      dialogRef.afterClosed().subscribe(result => {
+        if (result) {
+          this.tableElementService.assignUserToTableElement(element.id, result).subscribe({
+            next: () => {
+              console.log(`Assigned user ID ${result} to element ID ${element.id}`);
+              this.loadTables();
+            },
+            error: err => console.error('Failed to assign user to element', err)
+          });
+        }
+      });
+    }
+  }
+
+  canMakeChanges(): boolean {
+    return this.userRole === 'Admin' || this.userRole === 'Moderator';
   }
 }

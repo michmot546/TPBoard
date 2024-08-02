@@ -3,7 +3,7 @@
     <mat-card class="table-card" *ngFor="let table of tables">
       <mat-card-header>
         <mat-card-title>{{ table.name }}</mat-card-title>
-        <button mat-icon-button color="warn" (click)="deleteTable(table)">
+        <button *ngIf="canMakeChanges()" mat-icon-button color="warn" (click)="deleteTable(table)">
           <mat-icon>delete</mat-icon>
         </button>
       </mat-card-header>
@@ -20,8 +20,8 @@
             <span *ngIf="element.assignedUser">Currently assigned: {{ element.assignedUser.name }}</span>
             <span *ngIf="!element.assignedUser">Currently assigned: None</span>
             <button *ngIf="!element.assignedUser" mat-button (click)="takeTask(element)">Take Task</button>
-            <button mat-button (click)="openAssignUserDialog(element)">Edit Assignment</button>
-            <button mat-icon-button color="warn" (click)="deleteElement(element)">
+            <button *ngIf="canMakeChanges()" mat-button (click)="openAssignUserDialog(element)">Edit Assignment</button>
+            <button *ngIf="canMakeChanges()" mat-icon-button color="warn" (click)="deleteElement(element)">
               <mat-icon>delete</mat-icon>
             </button>
           </div>

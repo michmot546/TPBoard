@@ -111,5 +111,10 @@ namespace TPBoardWebApi.Services
                 _unitOfWork.Save();
             }
         }
+
+        public bool IsUserInProject(int projectId, int userId)
+        {
+            return _unitOfWork.ProjectUsers.Any(pu => pu.ProjectId == projectId && pu.UserId == userId);
+        }
     }
 }

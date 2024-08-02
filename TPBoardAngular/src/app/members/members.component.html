@@ -1,67 +1,66 @@
 <mat-tab-group>
-    <mat-tab label="Projects">
-      <div class="container">
-        <mat-form-field appearance="fill">
-          <mat-label>Search Projects</mat-label>
-          <input matInput [(ngModel)]="projectSearchTerm" (ngModelChange)="searchProjects()">
-        </mat-form-field>
-        <div class="projects-container">
-          <div *ngFor="let project of filteredProjects" class="project-card">
-            <mat-card>
-              <mat-card-header>
-                <mat-card-title>{{ project.name }}</mat-card-title>
-              </mat-card-header>
-              <mat-card-content>
-                <h3>Members</h3>
+  <mat-tab label="Projects">
+    <div class="container">
+      <mat-form-field appearance="fill">
+        <mat-label>Search Projects</mat-label>
+        <input matInput [(ngModel)]="projectSearchTerm" (ngModelChange)="searchProjects()">
+      </mat-form-field>
+      <div class="projects-container">
+        <div *ngFor="let project of filteredProjects" class="project-card">
+          <mat-card>
+            <mat-card-header>
+              <mat-card-title>{{ project.name }}</mat-card-title>
+            </mat-card-header>
+            <mat-card-content>
+              <h3>Members</h3>
+              <ul>
+                <li *ngFor="let user of project.users.slice(0, maxDisplayedMembers)">
+                  {{ user.user.name }}
+                  <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
+                </li>
+              </ul>
+              <ng-container *ngIf="project.users.length > maxDisplayedMembers">
+                <a href="#" (click)="toggleViewAllMembers(project.id, $event)">View All Members</a>
+              </ng-container>
+              <mat-form-field *ngIf="canEditOrDelete()" appearance="fill">
+                <mat-label>Add User</mat-label>
+                <input matInput [(ngModel)]="newUserName[project.id]" placeholder="Enter user name">
+              </mat-form-field>
+              <button *ngIf="canEditOrDelete()" mat-button (click)="addUserToProject(newUserName[project.id], project.id)">Add</button>
+              <div *ngIf="expandedProjectId === project.id">
                 <ul>
-                  <li *ngFor="let user of project.users.slice(0, maxDisplayedMembers)">
+                  <li *ngFor="let user of project.users">
                     {{ user.user.name }}
-                    <button mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
+                    <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
                   </li>
                 </ul>
-                <ng-container *ngIf="project.users.length > maxDisplayedMembers">
-                  <a href="#" (click)="toggleViewAllMembers(project.id, $event)">View All Members</a>
-                </ng-container>
-                <mat-form-field appearance="fill">
-                  <mat-label>Add User</mat-label>
-                  <input matInput [(ngModel)]="newUserName[project.id]" placeholder="Enter user name">
-                </mat-form-field>
-                <button mat-button (click)="addUserToProject(newUserName[project.id], project.id)">Add</button>
-                <div *ngIf="expandedProjectId === project.id">
-                  <ul>
-                    <li *ngFor="let user of project.users">
-                      {{ user.user.name }}
-                      <button mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
-                    </li>
-                  </ul>
-                  <a href="#" (click)="toggleViewAllMembers(project.id, $event)">View Less</a>
-                </div>
-              </mat-card-content>
-            </mat-card>
-          </div>
-        </div>
-        <div *ngIf="errorMessage" class="error-message">
-          {{ errorMessage }}
+                <a href="#" (click)="toggleViewAllMembers(project.id, $event)">View Less</a>
+              </div>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
-    </mat-tab>
-    <mat-tab label="All Users">
-      <div class="container">
-        <mat-form-field appearance="fill">
-          <mat-label>Search Users</mat-label>
-          <input matInput [(ngModel)]="userSearchTerm" (ngModelChange)="searchUsers()">
-        </mat-form-field>
-        <div class="users-container">
-          <div *ngFor="let user of filteredUsers" class="user-card">
-            <mat-card>
-              <mat-card-content>
-                <p>{{ user.name }}</p>
-                <p>{{ user.email }}</p>
-              </mat-card-content>
-            </mat-card>
-          </div>
+      <div *ngIf="errorMessage" class="error-message">
+        {{ errorMessage }}
+      </div>
+    </div>
+  </mat-tab>
+  <mat-tab label="All Users">
+    <div class="container">
+      <mat-form-field appearance="fill">
+        <mat-label>Search Users</mat-label>
+        <input matInput [(ngModel)]="userSearchTerm" (ngModelChange)="searchUsers()">
+      </mat-form-field>
+      <div class="users-container">
+        <div *ngFor="let user of filteredUsers" class="user-card">
+          <mat-card>
+            <mat-card-content>
+              <p>{{ user.name }}</p>
+              <p>{{ user.email }}</p>
+            </mat-card-content>
+          </mat-card>
         </div>
       </div>
-    </mat-tab>
-  </mat-tab-group>
-  
+    </div>
+  </mat-tab>
+</mat-tab-group>

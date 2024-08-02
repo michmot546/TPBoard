@@ -14,23 +14,51 @@ export class BoardComponent implements OnInit {
   isAuthenticated: boolean = false;
   projects: (Project & { editing: boolean })[] = [];
   owners: { [key: number]: User } = {};
+  currentUserRole: string | null = null;
+  currentUserId: number | null = null;
 
-  constructor(private projectService: ProjectService, private userService: UserService, public authService: AuthService) { }
+  constructor(
+    private projectService: ProjectService,
+    private userService: UserService,
+    public authService: AuthService
+  ) { }
 
   ngOnInit(): void {
     this.isAuthenticated = this.authService.isAuthenticated();
+    this.currentUserRole = this.authService.getRole();
+    this.currentUserId = this.authService.getCurrentUserId();
+
     if (this.isAuthenticated) {
-      this.projectService.getUserProjects().subscribe({
-        next: projects => {
-          this.projects = projects.map(project => ({ ...project, editing: false }));
-          this.fetchOwners();
-        },
-        error: err => {
-          console.error('Failed to fetch user projects:', err);
-          this.authService.logout();
-        }
-      });
+      if (this.currentUserRole === 'Admin') {
+        this.loadAllProjects();
+      } else {
+        this.loadUserProjects();
+      }
     }
+  }
+
+  loadAllProjects(): void {
+    this.projectService.getAllProjects().subscribe({
+      next: projects => {
+        this.projects = projects.map(project => ({ ...project, editing: false }));
+        this.fetchOwners();
+      },
+      error: err => {
+        console.error('Failed to fetch all projects:', err);
+      }
+    });
+  }
+
+  loadUserProjects(): void {
+    this.projectService.getUserProjects().subscribe({
+      next: projects => {
+        this.projects = projects.map(project => ({ ...project, editing: false }));
+        this.fetchOwners();
+      },
+      error: err => {
+        console.error('Failed to fetch user projects:', err);
+      }
+    });
   }
 
   fetchOwners(): void {
@@ -42,7 +70,6 @@ export class BoardComponent implements OnInit {
           },
           error: err => {
             console.error('Failed to fetch owner details:', err);
-            this.authService.logout();
           }
         });
       }
@@ -68,6 +95,7 @@ export class BoardComponent implements OnInit {
       project.editing = true;
     }
   }
+
   deleteProject(projectId: number): void {
     this.projectService.deleteProject(projectId).subscribe({
       next: () => {
@@ -78,5 +106,9 @@ export class BoardComponent implements OnInit {
         console.error('Failed to delete project', err);
       }
     });
+  }
+
+  canEditOrDelete(): boolean {
+    return this.currentUserRole === 'Admin' || this.currentUserRole === 'Moderator';
   }
 }

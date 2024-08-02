@@ -12,6 +12,7 @@ import { Project } from '../interfaces/project.model';
 })
 export class AddProjectComponent {
   projectForm: FormGroup;
+  userRole: string | null;
 
   constructor(
     private fb: FormBuilder,
@@ -22,6 +23,11 @@ export class AddProjectComponent {
     this.projectForm = this.fb.group({
       name: ['', Validators.required]
     });
+
+    this.userRole = this.authService.getRole();
+    if (!this.authService.isAuthenticated() || (this.userRole !== 'Admin' && this.userRole !== 'Moderator')) {
+      this.router.navigate(['/forbidden']);
+    }
   }
 
   onSubmit() {

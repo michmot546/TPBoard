@@ -1,11 +1,8 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
 using System.Security.Claims;
-using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
-using TPBoardWebApi.Services;
 
 [ApiController]
 [Route("api/[controller]")]
@@ -20,15 +17,24 @@ public class ProjectController : Controller
         _userService = userService;
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetAllProjects")]
     public IActionResult GetAllProjects()
     {
-        var projects = _projectService.GetAllProjects();
-        return Ok(projects);
+        if (User.IsInRole("Admin"))
+        {
+            var projects = _projectService.GetAllProjects();
+            return Ok(projects);
+        }
+        else
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var projects = _projectService.GetProjectsByUserId(userId);
+            return Ok(projects);
+        }
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetProjectById/{id}")]
     public IActionResult GetProjectById(int id)
     {
@@ -39,10 +45,15 @@ public class ProjectController : Controller
             return NotFound();
         }
 
-        return Ok(project);
+        if (User.IsInRole("Admin") || _projectService.IsUserInProject(id, int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value)))
+        {
+            return Ok(project);
+        }
+
+        return Forbid();
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetUserProjects")]
     public IActionResult GetUserProjects()
     {
@@ -51,8 +62,7 @@ public class ProjectController : Controller
         return Ok(projects);
     }
 
-
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpPost("CreateProject")]
     public IActionResult CreateProject([FromBody] Project newProject)
     {
@@ -66,7 +76,7 @@ public class ProjectController : Controller
         return CreatedAtAction(nameof(GetProjectById), new { id = newProject.Id }, newProject);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpPost("CreateProjectWithOwnerAdded")]
     public IActionResult CreateProjectWithOwnerAdded([FromBody] Project newProject)
     {
@@ -81,7 +91,7 @@ public class ProjectController : Controller
         return CreatedAtAction(nameof(GetProjectById), new { id = newProject.Id }, newProject);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpPost("AddUserToProject")]
     public IActionResult AddUserToProject([FromBody] AddRemoveUserDto dto)
     {
@@ -101,7 +111,7 @@ public class ProjectController : Controller
         return Ok();
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpPost("RemoveUserFromProject")]
     public IActionResult RemoveUserFromProject([FromBody] AddRemoveUserDto dto)
     {
@@ -121,7 +131,7 @@ public class ProjectController : Controller
         return Ok();
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpPut("UpdateProject/{id}")]
     public IActionResult UpdateProject(int id, [FromBody] Project updatedProject)
     {
@@ -135,7 +145,7 @@ public class ProjectController : Controller
         return NoContent();
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpDelete("DeleteProject/{id}")]
     public IActionResult DeleteProject(int id)
     {
@@ -151,19 +161,23 @@ public class ProjectController : Controller
         return NoContent();
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetProjectMembers/{projectId}")]
     public IActionResult GetProjectMembers(int projectId)
     {
-        try
+        if (User.IsInRole("Admin") || _projectService.IsUserInProject(projectId, int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value)))
         {
-            var members = _projectService.GetProjectMembers(projectId);
-            return Ok(members);
+            try
+            {
+                var members = _projectService.GetProjectMembers(projectId);
+                return Ok(members);
+            }
+            catch (KeyNotFoundException)
+            {
+                return NotFound();
+            }
         }
-        catch (KeyNotFoundException)
-        {
-            return NotFound();
-        }
-    }
 
+        return Forbid();
+    }
 }

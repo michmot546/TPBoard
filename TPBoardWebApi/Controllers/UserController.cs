@@ -1,11 +1,11 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 using System.IdentityModel.Tokens.Jwt;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authorization;
 
 namespace TPBoardWebApi.Controllers
 {
@@ -40,11 +40,12 @@ namespace TPBoardWebApi.Controllers
                 return Conflict("A user with this email already exists.");
             }
 
+            newUser.Role = "User";
+
             _userService.CreateUser(newUser);
             var token = GenerateJwtToken(newUser);
             return CreatedAtAction(nameof(GetUserById), new { id = newUser.Id }, new { token });
         }
-
 
         [HttpPost("login")]
         public IActionResult Login([FromBody] UserLoginDto loginDto)
@@ -63,14 +64,15 @@ namespace TPBoardWebApi.Controllers
             return BadRequest("Username or password is incorrect");
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator,User")]
         [HttpGet("GetAllUsers")]
         public IActionResult GetAllUsers()
         {
             var users = _userService.GetAllUsers();
             return Ok(users);
         }
-        [Authorize]
+
+        [Authorize(Roles = "Admin,Moderator,User")]
         [HttpGet("GetUserById/{id}")]
         public IActionResult GetUserById(int id)
         {
@@ -81,7 +83,8 @@ namespace TPBoardWebApi.Controllers
             }
             return Ok(user);
         }
-        [Authorize]
+
+        [Authorize(Roles = "Admin,Moderator,User")]
         [HttpPut("UpdateUser/{id}")]
         public IActionResult UpdateUser(int id, [FromBody] User updatedUser)
         {
@@ -90,10 +93,16 @@ namespace TPBoardWebApi.Controllers
                 return BadRequest("Mismatched user ID in the request");
             }
 
+            if (User.IsInRole("User") && id != int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value))
+            {
+                return Forbid();
+            }
+
             _userService.UpdateUser(updatedUser);
             return NoContent();
         }
-        [Authorize]
+
+        [Authorize(Roles = "Admin")]
         [HttpDelete("DeleteUser/{id}")]
         public IActionResult DeleteUser(int id)
         {
@@ -107,7 +116,7 @@ namespace TPBoardWebApi.Controllers
             return NoContent();
         }
 
-        [Authorize]
+        [Authorize(Roles = "Admin,Moderator,User")]
         [HttpGet("GetUserByName/{name}")]
         public IActionResult GetUserByName(string name)
         {
@@ -120,6 +129,109 @@ namespace TPBoardWebApi.Controllers
             return Ok(user);
         }
 
+        [Authorize(Roles = "Admin")]
+        [HttpPut("UpdateUserName")]
+        public IActionResult UpdateUserName([FromBody] User dto)
+        {
+            var user = _userService.GetUserById(dto.Id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Name = dto.Name;
+            _userService.UpdateUser(user);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("UpdateUserEmail")]
+        public IActionResult UpdateUserEmail([FromBody] User dto)
+        {
+            var user = _userService.GetUserById(dto.Id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Email = dto.Email;
+            _userService.UpdateUser(user);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin,Moderator,User")]
+        [HttpPut("UpdateUserNameSelf")]
+        public IActionResult UpdateUserNameSelf([FromBody] User dto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (userId != dto.Id)
+            {
+                return Forbid();
+            }
+
+            var user = _userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Name = dto.Name;
+            _userService.UpdateUser(user);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin,Moderator,User")]
+        [HttpPut("UpdateUserEmailSelf")]
+        public IActionResult UpdateUserEmailSelf([FromBody] User dto)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            if (userId != dto.Id)
+            {
+                return Forbid();
+            }
+
+            var user = _userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Email = dto.Email;
+            _userService.UpdateUser(user);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin,Moderator,User")]
+        [HttpPut("UpdateUserPassword")]
+        public IActionResult UpdateUserPassword([FromBody] User dto, string NewPassword)
+        {
+            var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
+            var user = _userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            if (!_userService.VerifyUser(user.Login, dto.Password))
+            {
+                return BadRequest("Current password is incorrect.");
+            }
+
+            user.Password = NewPassword;
+            _userService.UpdateUser(user);
+
+            return Ok();
+        }
+
         private string GenerateJwtToken(User user)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
@@ -129,8 +241,9 @@ namespace TPBoardWebApi.Controllers
                 Subject = new ClaimsIdentity(new[]
                 {
                     new Claim(ClaimTypes.NameIdentifier, user.Id.ToString()),
-                    new Claim(ClaimTypes.Name, user.Login)
-        }),
+                    new Claim(ClaimTypes.Name, user.Login),
+                    new Claim(ClaimTypes.Role, user.Role)
+                }),
                 Expires = DateTime.UtcNow.AddDays(7),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key), SecurityAlgorithms.HmacSha256Signature),
                 Issuer = _configuration["Jwt:Issuer"],
@@ -139,6 +252,5 @@ namespace TPBoardWebApi.Controllers
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-
     }
 }

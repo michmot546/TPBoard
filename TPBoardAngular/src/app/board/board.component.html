@@ -13,8 +13,8 @@
       </mat-card-content>
       <mat-card-actions>
         <button mat-button [routerLink]="['/project', project.id]">VIEW</button>
-        <button mat-button (click)="toggleEdit(project)">{{ project.editing ? 'SAVE' : 'EDIT' }}</button>
-        <button mat-button color="warn" (click)="deleteProject(project.id)">DELETE</button>
+        <button *ngIf="canEditOrDelete()" mat-button (click)="toggleEdit(project)">{{ project.editing ? 'SAVE' : 'EDIT' }}</button>
+        <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="deleteProject(project.id)">DELETE</button>
       </mat-card-actions>
     </mat-card>
   </div>

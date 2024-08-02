@@ -40,6 +40,27 @@ namespace TPBoardWebApi.Data
             .WithOne(t => t.Project)
             .HasForeignKey(t => t.ProjectId)
             .OnDelete(DeleteBehavior.Cascade);
+            modelBuilder.Entity<User>()
+                .Property(u => u.Role)
+                .IsRequired();
+        }
+
+        public void SeedAdminUser()
+        {
+            if (!Users.Any(u => u.Login == "admin"))
+            {
+                var adminUser = new User
+                {
+                    Login = "admin",
+                    Password = BCrypt.Net.BCrypt.HashPassword("admin123"), 
+                    Name = "Admin",
+                    Email = "admin@example.com",
+                    Role = "Admin"
+                };
+
+                Users.Add(adminUser);
+                SaveChanges();
+            }
         }
 
     }

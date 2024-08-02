@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 
@@ -15,14 +13,16 @@ public class TableElementController : Controller
     {
         _tableElementService = tableElementService;
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetAllElements")]
     public IActionResult GetAllElements()
     {
         var elements = _tableElementService.GetAllTableElements();
         return Ok(elements);
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetElementById/{id}")]
     public IActionResult GetElementById(int id)
     {
@@ -36,7 +36,7 @@ public class TableElementController : Controller
         return Ok(element);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetElementsByTableId/{tableId}")]
     public IActionResult GetElementsByTableId(int tableId)
     {
@@ -44,7 +44,7 @@ public class TableElementController : Controller
         return Ok(elements);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpPost("CreateTableElement")]
     public IActionResult CreateElement([FromBody] TableElement newElement)
     {
@@ -58,8 +58,7 @@ public class TableElementController : Controller
         return CreatedAtAction(nameof(GetElementById), new { id = newElement.Id }, newElement);
     }
 
-
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpPut("UpdateTableElement/{id}")]
     public IActionResult UpdateElement(int id, [FromBody] TableElement updatedElement)
     {
@@ -72,7 +71,8 @@ public class TableElementController : Controller
 
         return NoContent();
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpDelete("DeleteTableElement/{id}")]
     public IActionResult DeleteElement(int id)
     {
@@ -87,7 +87,8 @@ public class TableElementController : Controller
 
         return NoContent();
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpPost("{tableElementId}/assign/{userId}")]
     public IActionResult AssignUserToTableElement(int tableElementId, int userId)
     {
@@ -95,4 +96,3 @@ public class TableElementController : Controller
         return NoContent();
     }
 }
-

@@ -4,6 +4,7 @@ import { Observable, throwError } from 'rxjs';
 import { catchError, tap } from 'rxjs/operators';
 import { jwtDecode } from 'jwt-decode';
 import { Router } from '@angular/router';
+import { UserRole } from '../interfaces/UserRole';
 
 @Injectable({
   providedIn: 'root'
@@ -16,16 +17,20 @@ export class AuthService {
   login(credentials: { login: string; password: string }): Observable<any> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/login`, credentials).pipe(
       tap(response => {
+        const decoded: any = jwtDecode(response.token);
         localStorage.setItem('token', response.token);
+        localStorage.setItem('role', decoded.role);
       }),
       catchError(this.handleError)
     );
   }
 
-  register(data: { login: string; email: string; password: string; name: string }): Observable<any> {
+  register(data: { login: string; email: string; password: string; name: string; role: "User" }): Observable<any> {
     return this.http.post<{ token: string }>(`${this.apiUrl}/register`, data).pipe(
       tap(response => {
+        const decoded: any = jwtDecode(response.token);
         localStorage.setItem('token', response.token);
+        localStorage.setItem('role', decoded.role);
       }),
       catchError(this.handleError)
     );
@@ -33,12 +38,16 @@ export class AuthService {
 
   logout() {
     localStorage.removeItem('token');
+    localStorage.removeItem('role');
+    this.router.navigate(['/login']);
   }
 
   getToken(): string | null {
     return localStorage.getItem('token');
   }
-
+  getRole(): string {
+    return localStorage.getItem('role')!;
+  }
   isAuthenticated(): boolean {
     const token = this.getToken();
     if (token) {

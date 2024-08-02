@@ -2,6 +2,7 @@ import { Component, Inject } from '@angular/core';
 import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material/dialog';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TableService } from '../services/table.service';
+import { AuthService } from '../services/auth.service';
 
 export interface DialogData {
   projectId: number;
@@ -19,13 +20,18 @@ export class CreateTableDialogComponent {
     public dialogRef: MatDialogRef<CreateTableDialogComponent>,
     @Inject(MAT_DIALOG_DATA) public data: DialogData,
     private fb: FormBuilder,
-    private tableService: TableService
+    private tableService: TableService,
+    private authService: AuthService
   ) {
     this.createTableForm = this.fb.group({
       name: ['', Validators.required]
     });
   }
 
+  ngOnInit(): void {
+    if(!this.authService.isAuthenticated())
+      this.authService.logout();
+  }
   onCancel(): void {
     this.dialogRef.close();
   }

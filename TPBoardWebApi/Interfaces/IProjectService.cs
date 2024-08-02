@@ -14,5 +14,6 @@ namespace TPBoardWebApi.Interfaces
         public void CreateProjectWithOwnerAdded(Project project, int ownerId);
         void AddUserToProject(int userId, int projectId);
         void RemoveUserFromProject(int userId, int projectId);
+        bool IsUserInProject(int projectId, int userId);
     }
 }

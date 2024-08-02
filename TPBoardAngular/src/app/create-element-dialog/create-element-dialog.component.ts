@@ -4,6 +4,7 @@ import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { TableElementService } from '../services/table-element.service';
 import { ProjectService } from '../services/project.service';
 import { User } from '../interfaces/user.model';
+import { AuthService } from '../services/auth.service';
 
 @Component({
   selector: 'app-create-element-dialog',
@@ -19,7 +20,8 @@ export class CreateElementDialogComponent implements OnInit {
     @Inject(MAT_DIALOG_DATA) public data: { tableId: number, projectId: number },
     private fb: FormBuilder,
     private tableElementService: TableElementService,
-    private projectService: ProjectService
+    private projectService: ProjectService,
+    private authService: AuthService
   ) {
     this.elementForm = this.fb.group({
       name: ['', Validators.required],
@@ -28,7 +30,10 @@ export class CreateElementDialogComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.loadProjectMembers();
+    if(this.authService.isAuthenticated())
+      this.loadProjectMembers();
+    else
+      this.authService.logout();
   }
 
   loadProjectMembers(): void {

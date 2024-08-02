@@ -31,7 +31,7 @@ import { MatInputModule } from '@angular/material/input';
 import { AppRoutingModule } from './app-routing.module';
 import { MatCardModule } from '@angular/material/card';
 import { MatToolbarModule } from '@angular/material/toolbar';
-import { AuthService } from './services';
+
 import { AuthInterceptor } from './services/auth-interceptor.service';
 import { ProjectTablesComponent } from './project-tables/project-tables.component';
 import { TableService } from './services/table.service';
@@ -44,6 +44,7 @@ import { AssignUserDialogComponent } from './assign-user-dialog/assign-user-dial
 import { MatOptionModule } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select'; 
 import { MatTabsModule } from '@angular/material/tabs';
+import { AuthService } from './services/auth.service';
 @NgModule({
   declarations: [
     AppComponent,

@@ -33,4 +33,24 @@ export class UserService {
   getUserByName(name: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/GetUserByName/${name}`);
   }
+  updateUserName(userId: number, name: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/UpdateUserNameSelf`, { id: userId, name });
+  }
+
+  updateUserEmail(userId: number, email: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/UpdateUserEmailSelf`, { id: userId, email });
+  }
+
+  updateUserPassword(userId: number, currentPassword: string, newPassword: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/UpdateUserPassword`, { id: userId, currentPassword, newPassword });
+  }
+  
+  // Admin specific updates
+  updateUserNameAdmin(userId: number, name: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/UpdateUserName`, { id: userId, name });
+  }
+
+  updateUserEmailAdmin(userId: number, email: string): Observable<any> {
+    return this.http.put(`${this.apiUrl}/UpdateUserEmail`, { id: userId, email });
+  }
 }

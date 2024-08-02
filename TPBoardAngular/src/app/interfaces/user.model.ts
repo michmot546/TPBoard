@@ -1,4 +1,5 @@
 import { ProjectUser } from "./projectuser.model";
+import { UserRole } from "./UserRole";
 
 export interface User {
   id: number;
@@ -7,4 +8,5 @@ export interface User {
   name: string;
   email: string;
   projects?: ProjectUser[];
+  roles: UserRole[]
 }

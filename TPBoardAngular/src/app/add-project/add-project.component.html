@@ -1,4 +1,4 @@
-<mat-card class="add-project-card">
+<mat-card *ngIf="userRole === 'Admin' || userRole === 'Moderator'" class="add-project-card">
   <mat-card-title>Add New Project</mat-card-title>
   <form [formGroup]="projectForm" (ngSubmit)="onSubmit()">
     <mat-form-field appearance="fill" class="form-field">

@@ -1,7 +1,5 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using TPBoardWebApi.Data;
 using TPBoardWebApi.Interfaces;
 using TPBoardWebApi.Models;
 
@@ -15,14 +13,16 @@ public class TableController : Controller
     {
         _tableService = tableService;
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetAllTables")]
     public IActionResult GetAllTables()
     {
         var tables = _tableService.GetAllTables();
         return Ok(tables);
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetTableById/{id}")]
     public IActionResult GetTableById(int id)
     {
@@ -36,7 +36,7 @@ public class TableController : Controller
         return Ok(table);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpGet("GetTablesByProjectId/{projectId}")]
     public IActionResult GetTablesByProjectId(int projectId)
     {
@@ -44,7 +44,7 @@ public class TableController : Controller
         return Ok(tables);
     }
 
-    [Authorize]
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpPost("CreateTable")]
     public IActionResult CreateTable([FromBody] Table newTable)
     {
@@ -57,7 +57,8 @@ public class TableController : Controller
 
         return CreatedAtAction(nameof(GetTableById), new { id = newTable.Id }, newTable);
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator,User")]
     [HttpPut("UpdateTable/{id}")]
     public IActionResult UpdateTable(int id, [FromBody] Table updatedTable)
     {
@@ -70,7 +71,8 @@ public class TableController : Controller
 
         return NoContent();
     }
-    [Authorize]
+
+    [Authorize(Roles = "Admin,Moderator")]
     [HttpDelete("DeleteTable/{id}")]
     public IActionResult DeleteTable(int id)
     {
