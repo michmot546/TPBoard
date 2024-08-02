@@ -173,4 +173,8 @@ export class MembersComponent implements OnInit {
   canEditOrDelete(): boolean {
     return this.userRole === 'Admin' || this.userRole === 'Moderator';
   }
+
+  isUserAdmin(): boolean {
+    return this.userRole === 'Admin';
+  }
 }

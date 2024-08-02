@@ -15,7 +15,7 @@
               <h3>Members</h3>
               <ul>
                 <li *ngFor="let user of project.users.slice(0, maxDisplayedMembers)">
-                  {{ user.user.name }}
+                  {{ user.user.name }} <span *ngIf="isUserAdmin()">({{ user.userId }})</span>
                   <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
                 </li>
               </ul>
@@ -30,7 +30,7 @@
               <div *ngIf="expandedProjectId === project.id">
                 <ul>
                   <li *ngFor="let user of project.users">
-                    {{ user.user.name }}
+                    {{ user.user.name }} <span *ngIf="isUserAdmin()">({{ user.userId }})</span>
                     <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
                   </li>
                 </ul>
@@ -55,7 +55,7 @@
         <div *ngFor="let user of filteredUsers" class="user-card">
           <mat-card>
             <mat-card-content>
-              <p>{{ user.name }}</p>
+              <p>{{ user.name }} <span *ngIf="isUserAdmin()">({{ user.id }})</span></p>
               <p>{{ user.email }}</p>
             </mat-card-content>
           </mat-card>

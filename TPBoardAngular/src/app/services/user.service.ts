@@ -42,8 +42,8 @@ export class UserService {
   }
 
   updateUserPassword(userId: number, currentPassword: string, newPassword: string): Observable<any> {
-    return this.http.put(`${this.apiUrl}/UpdateUserPassword`, { id: userId, currentPassword, newPassword });
-  }
+    return this.http.put(`${this.apiUrl}/UpdateUserPassword`, { id: userId, oldPassword: currentPassword, newPassword });
+}
   
   // Admin specific updates
   updateUserNameAdmin(userId: number, name: string): Observable<any> {
@@ -52,5 +52,13 @@ export class UserService {
 
   updateUserEmailAdmin(userId: number, email: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/UpdateUserEmail`, { id: userId, email });
+  }
+
+  assignModeratorRole(userId: number | null): Observable<any> {
+    return this.http.put(`${this.apiUrl}/AssignModeratorRole/${userId}`, {});
+  }
+
+  removeModeratorRole(userId: number | null): Observable<any> {
+    return this.http.put(`${this.apiUrl}/RemoveModeratorRole/${userId}`, {});
   }
 }

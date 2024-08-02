@@ -211,7 +211,7 @@ namespace TPBoardWebApi.Controllers
 
         [Authorize(Roles = "Admin,Moderator,User")]
         [HttpPut("UpdateUserPassword")]
-        public IActionResult UpdateUserPassword([FromBody] User dto, string NewPassword)
+        public IActionResult UpdateUserPassword([FromBody] UpdatePasswordDto dto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             var user = _userService.GetUserById(userId);
@@ -221,12 +221,45 @@ namespace TPBoardWebApi.Controllers
                 return NotFound();
             }
 
-            if (!_userService.VerifyUser(user.Login, dto.Password))
+            if (!_userService.VerifyUser(user.Login, dto.OldPassword))
             {
                 return BadRequest("Current password is incorrect.");
             }
+            user.Password = BCrypt.Net.BCrypt.HashPassword(dto.NewPassword);
+            _userService.UpdateUser(user);
 
-            user.Password = NewPassword;
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("AssignModeratorRole/{userId}")]
+        public IActionResult AssignModeratorRole(int userId)
+        {
+            var user = _userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Role = "Moderator";
+            _userService.UpdateUser(user);
+
+            return Ok();
+        }
+
+        [Authorize(Roles = "Admin")]
+        [HttpPut("RemoveModeratorRole/{userId}")]
+        public IActionResult RemoveModeratorRole(int userId)
+        {
+            var user = _userService.GetUserById(userId);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            user.Role = "User";
             _userService.UpdateUser(user);
 
             return Ok();

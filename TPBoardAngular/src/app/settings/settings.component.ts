@@ -13,6 +13,7 @@ export class SettingsComponent implements OnInit {
   changeNameForm: FormGroup;
   changeEmailForm: FormGroup;
   changePasswordForm: FormGroup;
+  deleteUserForm: FormGroup;
   userId: number | null;
   userRole: string | null;
   errorMessage: string = '';
@@ -39,9 +40,15 @@ export class SettingsComponent implements OnInit {
       currentPassword: ['', Validators.required],
       newPassword: ['', [Validators.required, Validators.minLength(8)]]
     });
+
+    this.deleteUserForm = this.fb.group({
+      userIdToDelete: [null, Validators.required]
+    });
   }
 
   ngOnInit(): void {
+    if(!this.authService.isAuthenticated())
+      this.authService.logout();
     if (!this.userId) {
       this.router.navigate(['/login']);
     }
@@ -50,62 +57,34 @@ export class SettingsComponent implements OnInit {
   onChangeName() {
     if (this.changeNameForm.valid && this.userId) {
       const newName = this.changeNameForm.value.name;
-      if (this.userRole === 'Admin') {
-        this.userService.updateUserNameAdmin(this.userId, newName).subscribe({
-          next: () => {
-            this.successMessage = 'Name updated successfully.';
-            this.errorMessage = '';
-          },
-          error: err => {
-            this.errorMessage = 'Failed to update name.';
-            this.successMessage = '';
-            console.error('Failed to update name', err);
-          }
-        });
-      } else {
-        this.userService.updateUserName(this.userId, newName).subscribe({
-          next: () => {
-            this.successMessage = 'Name updated successfully.';
-            this.errorMessage = '';
-          },
-          error: err => {
-            this.errorMessage = 'Failed to update name.';
-            this.successMessage = '';
-            console.error('Failed to update name', err);
-          }
-        });
-      }
+      this.userService.updateUserName(this.userId, newName).subscribe({
+        next: () => {
+          this.successMessage = 'Name updated successfully.';
+          this.errorMessage = '';
+        },
+        error: err => {
+          this.errorMessage = 'Failed to update name.';
+          this.successMessage = '';
+          console.error('Failed to update name', err);
+        }
+      });
     }
   }
 
   onChangeEmail() {
     if (this.changeEmailForm.valid && this.userId) {
       const newEmail = this.changeEmailForm.value.email;
-      if (this.userRole === 'Admin') {
-        this.userService.updateUserEmailAdmin(this.userId, newEmail).subscribe({
-          next: () => {
-            this.successMessage = 'Email updated successfully.';
-            this.errorMessage = '';
-          },
-          error: err => {
-            this.errorMessage = 'Failed to update email.';
-            this.successMessage = '';
-            console.error('Failed to update email', err);
-          }
-        });
-      } else {
-        this.userService.updateUserEmail(this.userId, newEmail).subscribe({
-          next: () => {
-            this.successMessage = 'Email updated successfully.';
-            this.errorMessage = '';
-          },
-          error: err => {
-            this.errorMessage = 'Failed to update email.';
-            this.successMessage = '';
-            console.error('Failed to update email', err);
-          }
-        });
-      }
+      this.userService.updateUserEmail(this.userId, newEmail).subscribe({
+        next: () => {
+          this.successMessage = 'Email updated successfully.';
+          this.errorMessage = '';
+        },
+        error: err => {
+          this.errorMessage = 'Failed to update email.';
+          this.successMessage = '';
+          console.error('Failed to update email', err);
+        }
+      });
     }
   }
 
@@ -125,5 +104,63 @@ export class SettingsComponent implements OnInit {
         }
       });
     }
+  }
+
+
+  onDeleteUser() {
+    if (this.deleteUserForm.valid && this.userRole === 'Admin') {
+      const userIdToDelete = this.deleteUserForm.value.userIdToDelete;
+      this.userService.deleteUser(userIdToDelete).subscribe({
+        next: () => {
+          this.successMessage = 'User deleted successfully.';
+          this.errorMessage = '';
+        },
+        error: err => {
+          this.errorMessage = 'Failed to delete user.';
+          this.successMessage = '';
+          console.error('Failed to delete user', err);
+        }
+      });
+    }
+  }
+
+  onAssignModerator(userId: number | null) {
+    if (userId === null) {
+      this.errorMessage = 'Please enter a valid User ID.';
+      this.successMessage = '';
+      return;
+    }
+
+    this.userService.assignModeratorRole(userId).subscribe({
+      next: () => {
+        this.successMessage = 'Moderator role assigned successfully.';
+        this.errorMessage = '';
+      },
+      error: err => {
+        this.errorMessage = 'Failed to assign moderator role.';
+        this.successMessage = '';
+        console.error('Failed to assign moderator role', err);
+      }
+    });
+  }
+
+  onRemoveModerator(userId: number | null) {
+    if (userId === null) {
+      this.errorMessage = 'Please enter a valid User ID.';
+      this.successMessage = '';
+      return;
+    }
+
+    this.userService.removeModeratorRole(userId).subscribe({
+      next: () => {
+        this.successMessage = 'Moderator role removed successfully.';
+        this.errorMessage = '';
+      },
+      error: err => {
+        this.errorMessage = 'Failed to remove moderator role.';
+        this.successMessage = '';
+        console.error('Failed to remove moderator role', err);
+      }
+    });
   }
 }

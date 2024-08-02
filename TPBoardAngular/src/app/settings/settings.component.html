@@ -1,60 +1,97 @@
 <div class="settings-container">
+  <mat-card>
+    <mat-card-title>Change Name</mat-card-title>
+    <form [formGroup]="changeNameForm" (ngSubmit)="onChangeName()">
+      <mat-form-field appearance="fill">
+        <mat-label>New Name</mat-label>
+        <input matInput formControlName="name">
+        <mat-error *ngIf="changeNameForm.get('name')?.errors?.['required']">
+          Name is required
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!changeNameForm.valid">Change Name</button>
+    </form>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Change Email</mat-card-title>
+    <form [formGroup]="changeEmailForm" (ngSubmit)="onChangeEmail()">
+      <mat-form-field appearance="fill">
+        <mat-label>New Email</mat-label>
+        <input matInput formControlName="email">
+        <mat-error *ngIf="changeEmailForm.get('email')?.errors?.['required']">
+          Email is required
+        </mat-error>
+        <mat-error *ngIf="changeEmailForm.get('email')?.errors?.['email']">
+          Enter a valid email
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!changeEmailForm.valid">Change Email</button>
+    </form>
+  </mat-card>
+
+  <mat-card>
+    <mat-card-title>Change Password</mat-card-title>
+    <form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+      <mat-form-field appearance="fill">
+        <mat-label>Current Password</mat-label>
+        <input matInput type="password" formControlName="currentPassword">
+        <mat-error *ngIf="changePasswordForm.get('currentPassword')?.errors?.['required']">
+          Current password is required
+        </mat-error>
+      </mat-form-field>
+      <mat-form-field appearance="fill">
+        <mat-label>New Password</mat-label>
+        <input matInput type="password" formControlName="newPassword">
+        <mat-error *ngIf="changePasswordForm.get('newPassword')?.errors?.['required']">
+          New password is required
+        </mat-error>
+        <mat-error *ngIf="changePasswordForm.get('newPassword')?.errors?.['minlength']">
+          Password must be at least 8 characters long
+        </mat-error>
+      </mat-form-field>
+      <button mat-raised-button color="primary" type="submit" [disabled]="!changePasswordForm.valid">Change Password</button>
+    </form>
+  </mat-card>
+
+  <div *ngIf="userRole === 'Admin'">
     <mat-card>
-      <mat-card-title>Change Name</mat-card-title>
-      <form [formGroup]="changeNameForm" (ngSubmit)="onChangeName()">
+      <mat-card-title>Assign Moderator Role</mat-card-title>
+      <form (ngSubmit)="onAssignModerator(moderatorUserId.valueAsNumber)">
         <mat-form-field appearance="fill">
-          <mat-label>New Name</mat-label>
-          <input matInput formControlName="name">
-          <mat-error *ngIf="changeNameForm.get('name')?.errors?.['required']">
-            Name is required
-          </mat-error>
+          <mat-label>User ID</mat-label>
+          <input matInput #moderatorUserId type="number">
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!changeNameForm.valid">Change Name</button>
+        <button mat-raised-button color="primary" type="submit">Assign Moderator</button>
       </form>
     </mat-card>
-  
+
     <mat-card>
-      <mat-card-title>Change Email</mat-card-title>
-      <form [formGroup]="changeEmailForm" (ngSubmit)="onChangeEmail()">
+      <mat-card-title>Remove Moderator Role</mat-card-title>
+      <form (ngSubmit)="onRemoveModerator(removeModeratorUserId.valueAsNumber)">
         <mat-form-field appearance="fill">
-          <mat-label>New Email</mat-label>
-          <input matInput formControlName="email">
-          <mat-error *ngIf="changeEmailForm.get('email')?.errors?.['required']">
-            Email is required
-          </mat-error>
-          <mat-error *ngIf="changeEmailForm.get('email')?.errors?.['email']">
-            Enter a valid email
-          </mat-error>
+          <mat-label>User ID</mat-label>
+          <input matInput #removeModeratorUserId type="number">
         </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!changeEmailForm.valid">Change Email</button>
+        <button mat-raised-button color="primary" type="submit">Remove Moderator</button>
       </form>
     </mat-card>
-  
+
     <mat-card>
-      <mat-card-title>Change Password</mat-card-title>
-      <form [formGroup]="changePasswordForm" (ngSubmit)="onChangePassword()">
+      <mat-card-title>Delete User</mat-card-title>
+      <form [formGroup]="deleteUserForm" (ngSubmit)="onDeleteUser()">
         <mat-form-field appearance="fill">
-          <mat-label>Current Password</mat-label>
-          <input matInput type="password" formControlName="currentPassword">
-          <mat-error *ngIf="changePasswordForm.get('currentPassword')?.errors?.['required']">
-            Current password is required
+          <mat-label>User ID to Delete</mat-label>
+          <input matInput formControlName="userIdToDelete" type="number">
+          <mat-error *ngIf="deleteUserForm.get('userIdToDelete')?.errors?.['required']">
+            User ID is required
           </mat-error>
         </mat-form-field>
-        <mat-form-field appearance="fill">
-          <mat-label>New Password</mat-label>
-          <input matInput type="password" formControlName="newPassword">
-          <mat-error *ngIf="changePasswordForm.get('newPassword')?.errors?.['required']">
-            New password is required
-          </mat-error>
-          <mat-error *ngIf="changePasswordForm.get('newPassword')?.errors?.['minlength']">
-            Password must be at least 8 characters long
-          </mat-error>
-        </mat-form-field>
-        <button mat-raised-button color="primary" type="submit" [disabled]="!changePasswordForm.valid">Change Password</button>
+        <button mat-raised-button color="warn" type="submit" [disabled]="!deleteUserForm.valid">Delete User</button>
       </form>
     </mat-card>
-  
-    <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
-    <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
   </div>
-  
+
+  <div *ngIf="errorMessage" class="error-message">{{ errorMessage }}</div>
+  <div *ngIf="successMessage" class="success-message">{{ successMessage }}</div>
+</div>
