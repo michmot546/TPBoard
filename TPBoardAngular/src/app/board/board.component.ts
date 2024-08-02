@@ -24,17 +24,19 @@ export class BoardComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
-    this.isAuthenticated = this.authService.isAuthenticated();
-    this.currentUserRole = this.authService.getRole();
-    this.currentUserId = this.authService.getCurrentUserId();
+    this.authService.isAuthenticated().subscribe(isAuth => {
+      this.isAuthenticated = isAuth;
+      if (this.isAuthenticated) {
+        this.currentUserRole = this.authService.getRole();
+        this.currentUserId = this.authService.getCurrentUserId();
 
-    if (this.isAuthenticated) {
-      if (this.currentUserRole === 'Admin') {
-        this.loadAllProjects();
-      } else {
-        this.loadUserProjects();
+        if (this.currentUserRole === 'Admin') {
+          this.loadAllProjects();
+        } else {
+          this.loadUserProjects();
+        }
       }
-    }
+    });
   }
 
   loadAllProjects(): void {

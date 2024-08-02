@@ -1,11 +1,10 @@
-<div class="container" *ngIf="authService.isAuthenticated(); else loginPage">
-    <app-navbar></app-navbar>
-    <div class="content">
-      <app-sidebar></app-sidebar>
-      </div>
+<div class="container" *ngIf="isAuthenticated; else loginPage">
+  <app-navbar></app-navbar>
+  <div class="content">
+    <app-sidebar></app-sidebar>
   </div>
-  
-  <ng-template #loginPage>
-    <router-outlet></router-outlet>
-  </ng-template>
-  
+</div>
+
+<ng-template #loginPage>
+  <router-outlet></router-outlet>
+</ng-template>
