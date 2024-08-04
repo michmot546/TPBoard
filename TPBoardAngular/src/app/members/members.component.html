@@ -1,36 +1,36 @@
 <mat-tab-group>
   <mat-tab label="Projects">
     <div class="container">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Search Projects</mat-label>
         <input matInput [(ngModel)]="projectSearchTerm" (ngModelChange)="searchProjects()">
       </mat-form-field>
       <div class="projects-container">
         <div *ngFor="let project of filteredProjects" class="project-card">
-          <mat-card>
+          <mat-card class="equal-height-card">
             <mat-card-header>
               <mat-card-title>{{ project.name }}</mat-card-title>
             </mat-card-header>
-            <mat-card-content>
+            <mat-card-content class="card-content">
               <h3>Members</h3>
-              <ul>
-                <li *ngFor="let user of project.users.slice(0, maxDisplayedMembers)">
-                  {{ user.user.name }} <span *ngIf="isUserAdmin()">({{ user.userId }})</span>
+              <ul class="members-list">
+                <li *ngFor="let user of project.users.slice(0, maxDisplayedMembers)" class="member-item">
+                  <span>{{ user.user.name }} <span *ngIf="isUserAdmin()">ID: {{ user.userId }}</span></span>
                   <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
                 </li>
               </ul>
               <ng-container *ngIf="project.users.length > maxDisplayedMembers">
                 <a href="#" (click)="toggleViewAllMembers(project.id, $event)">View All Members</a>
               </ng-container>
-              <mat-form-field *ngIf="canEditOrDelete()" appearance="fill">
+              <mat-form-field *ngIf="canEditOrDelete()" appearance="outline">
                 <mat-label>Add User</mat-label>
                 <input matInput [(ngModel)]="newUserName[project.id]" placeholder="Enter user name">
               </mat-form-field>
-              <button *ngIf="canEditOrDelete()" mat-button (click)="addUserToProject(newUserName[project.id], project.id)">Add</button>
+              <button *ngIf="canEditOrDelete()" mat-raised-button color="primary" (click)="addUserToProject(newUserName[project.id], project.id)">Add</button>
               <div *ngIf="expandedProjectId === project.id">
-                <ul>
-                  <li *ngFor="let user of project.users">
-                    {{ user.user.name }} <span *ngIf="isUserAdmin()">({{ user.userId }})</span>
+                <ul class="members-list">
+                  <li *ngFor="let user of project.users" class="member-item">
+                    <span>{{ user.user.name }} <span *ngIf="isUserAdmin()">ID: {{ user.userId }}</span></span>
                     <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="removeUserFromProject(user.userId, project.id)">Remove</button>
                   </li>
                 </ul>
@@ -47,15 +47,15 @@
   </mat-tab>
   <mat-tab label="All Users">
     <div class="container">
-      <mat-form-field appearance="fill">
+      <mat-form-field appearance="outline">
         <mat-label>Search Users</mat-label>
         <input matInput [(ngModel)]="userSearchTerm" (ngModelChange)="searchUsers()">
       </mat-form-field>
       <div class="users-container">
         <div *ngFor="let user of filteredUsers" class="user-card">
-          <mat-card>
+          <mat-card class="equal-height-card">
             <mat-card-content>
-              <p>{{ user.name }} <span *ngIf="isUserAdmin()">({{ user.id }})</span></p>
+              <p>{{ user.name }} <span *ngIf="isUserAdmin()">ID: {{ user.id }}</span></p>
               <p>{{ user.email }}</p>
             </mat-card-content>
           </mat-card>

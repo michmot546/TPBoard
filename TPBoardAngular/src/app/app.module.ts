@@ -45,6 +45,7 @@ import { MatOptionModule } from '@angular/material/core';
 import {MatSelectModule} from '@angular/material/select'; 
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from './services/auth.service';
+import { MembersDialogComponent } from './members-dialog/members-dialog.component';
 @NgModule({
   declarations: [
     AppComponent,
@@ -60,6 +61,7 @@ import { AuthService } from './services/auth.service';
     CreateTableDialogComponent,
     CreateElementDialogComponent,
     AssignUserDialogComponent,
+    MembersDialogComponent,
   ],
   imports: [
     BrowserModule,

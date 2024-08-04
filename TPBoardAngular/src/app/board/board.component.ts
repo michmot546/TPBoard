@@ -13,9 +13,11 @@ import { UserService } from '../services/user.service';
 export class BoardComponent implements OnInit {
   isAuthenticated: boolean = false;
   projects: (Project & { editing: boolean })[] = [];
+  filteredProjects: (Project & { editing: boolean })[] = [];
   owners: { [key: number]: User } = {};
   currentUserRole: string | null = null;
   currentUserId: number | null = null;
+  searchTerm: string = '';
 
   constructor(
     private projectService: ProjectService,
@@ -43,6 +45,7 @@ export class BoardComponent implements OnInit {
     this.projectService.getAllProjects().subscribe({
       next: projects => {
         this.projects = projects.map(project => ({ ...project, editing: false }));
+        this.filteredProjects = this.projects;
         this.fetchOwners();
       },
       error: err => {
@@ -55,6 +58,7 @@ export class BoardComponent implements OnInit {
     this.projectService.getUserProjects().subscribe({
       next: projects => {
         this.projects = projects.map(project => ({ ...project, editing: false }));
+        this.filteredProjects = this.projects;
         this.fetchOwners();
       },
       error: err => {
@@ -102,6 +106,7 @@ export class BoardComponent implements OnInit {
     this.projectService.deleteProject(projectId).subscribe({
       next: () => {
         this.projects = this.projects.filter(project => project.id !== projectId);
+        this.filteredProjects = this.projects;
         console.log('Project deleted successfully');
       },
       error: err => {
@@ -112,5 +117,15 @@ export class BoardComponent implements OnInit {
 
   canEditOrDelete(): boolean {
     return this.currentUserRole === 'Admin' || this.currentUserRole === 'Moderator';
+  }
+
+  searchProjects(): void {
+    if (this.searchTerm) {
+      this.filteredProjects = this.projects.filter(project =>
+        project.name.toLowerCase().includes(this.searchTerm.toLowerCase())
+      );
+    } else {
+      this.filteredProjects = this.projects;
+    }
   }
 }

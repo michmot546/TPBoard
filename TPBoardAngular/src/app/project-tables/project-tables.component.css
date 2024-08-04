@@ -1,33 +1,15 @@
 .example-container {
   width: 400px;
   max-width: 100%;
-  margin: 0 25px 25px 0;
   display: inline-block;
-  vertical-align: top;
 }
 
 .example-list {
-  border: solid 1px #ccc;
-  min-height: 60px;
   background: white;
   border-radius: 4px;
   overflow: hidden;
-  display: block;
 }
 
-.example-box {
-  padding: 20px 10px;
-  border-bottom: solid 1px #ccc;
-  color: rgba(0, 0, 0, 0.87);
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-between;
-  box-sizing: border-box;
-  cursor: move;
-  background: white;
-  font-size: 14px;
-}
 
 .cdk-drag-preview {
   box-sizing: border-box;
@@ -51,4 +33,75 @@
 
 .example-list.cdk-drop-list-dragging .example-box:not(.cdk-drag-placeholder) {
   transition: transform 250ms cubic-bezier(0, 0, 0.2, 1);
+}
+.tables-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+  justify-content: flex-start;
+  padding: 20px;
+}
+
+.table-card {
+  width: 300px;
+  flex-shrink: 0;
+}
+
+.mat-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.example-list {
+  min-height: 50px;
+}
+
+.example-box {
+  padding: 10px;
+  margin: 5px 0;
+  background: #e2dddd;
+  border-radius: 4px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border: 1px solid #ddd;
+}
+
+.element-content {
+  display: flex;
+  flex-direction: column;
+}
+
+.element-text {
+  word-wrap: break-word;
+  white-space: normal;
+}
+
+.element-assigned {
+  font-size: 0.9em;
+  color: #555;
+}
+
+.element-actions {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 10px;
+}
+
+.delete-button,
+.delete-element-button {
+  margin-left: auto;
+}
+
+.add-table-button {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+}
+
+.not-authenticated {
+  text-align: center;
+  padding: 20px;
 }

@@ -1,0 +1,16 @@
+<h1 mat-dialog-title>All Members of {{ data.project.name }}</h1>
+<div mat-dialog-content>
+  <mat-form-field appearance="outline" class="full-width">
+    <mat-label>Search Members</mat-label>
+    <input matInput [(ngModel)]="searchTerm" (input)="searchMembers()">
+  </mat-form-field>
+  <ul class="members-list">
+    <li *ngFor="let projectUser of filteredMembers" class="member-item">
+      {{ projectUser.user.name }} <span *ngIf="isUserAdmin()">ID: {{ projectUser.userId }}</span>
+      <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="removeUserFromProject(projectUser.userId, data.project.id)">Remove</button>
+    </li>
+  </ul>
+</div>
+<div mat-dialog-actions>
+  <button mat-button (click)="onClose()">Close</button>
+</div>

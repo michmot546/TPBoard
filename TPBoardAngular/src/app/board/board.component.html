@@ -1,25 +1,31 @@
-<div *ngIf="isAuthenticated">
+<div *ngIf="isAuthenticated" class="board-container">
+  <div class="search-container">
+    <mat-form-field appearance="outline" class="search-field">
+      <mat-label>Search Projects</mat-label>
+      <input matInput [(ngModel)]="searchTerm" (input)="searchProjects()">
+    </mat-form-field>
+  </div>
+
   <div class="projects-container">
-    <mat-card class="project-card" *ngFor="let project of projects">
+    <mat-card class="project-card" *ngFor="let project of filteredProjects">
       <mat-card-header>
         <mat-card-title>
           <span *ngIf="!project.editing">{{ project.name }}</span>
-          <input *ngIf="project.editing" [(ngModel)]="project.name">
+          <input *ngIf="project.editing" [(ngModel)]="project.name" class="edit-input">
         </mat-card-title>
-        <mat-card-subtitle>Autor: {{ getOwnerName(project.ownerId) }}</mat-card-subtitle>
+        <mat-card-subtitle>Author: {{ getOwnerName(project.ownerId) }}</mat-card-subtitle>
       </mat-card-header>
-      <mat-card-content>
-        
-      </mat-card-content>
       <mat-card-actions>
         <button mat-button [routerLink]="['/project', project.id]">VIEW</button>
-        <button *ngIf="canEditOrDelete()" mat-button (click)="toggleEdit(project)">{{ project.editing ? 'SAVE' : 'EDIT' }}</button>
+        <button *ngIf="canEditOrDelete()" mat-button (click)="toggleEdit(project)">
+          {{ project.editing ? 'SAVE' : 'EDIT' }}
+        </button>
         <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="deleteProject(project.id)">DELETE</button>
       </mat-card-actions>
     </mat-card>
   </div>
 </div>
-<div *ngIf="!isAuthenticated">
+<div *ngIf="!isAuthenticated" class="not-authenticated">
   <p>You must be logged in to view your projects.</p>
   <button mat-button [routerLink]="['/loginPage']">GO BACK</button>
 </div>

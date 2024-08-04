@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { ProjectService } from '../services/project.service';
 import { RoleService } from '../services/role.service';
+import { UserService } from '../services/user.service';
 import { Project } from '../interfaces/project.model';
 import { User } from '../interfaces/user.model';
-import { UserService } from '../services/user.service';
+import { MembersDialogComponent } from '../members-dialog/members-dialog.component';
 
 @Component({
   selector: 'app-members',
@@ -26,7 +28,8 @@ export class MembersComponent implements OnInit {
   constructor(
     private projectService: ProjectService,
     private userService: UserService,
-    private roleService: RoleService
+    private roleService: RoleService,
+    public dialog: MatDialog
   ) {
     this.userRole = this.roleService.getCurrentUserRole();
   }
@@ -167,7 +170,13 @@ export class MembersComponent implements OnInit {
 
   toggleViewAllMembers(projectId: number, event: Event): void {
     event.preventDefault();
-    this.expandedProjectId = this.expandedProjectId === projectId ? null : projectId;
+    const project = this.projects.find(p => p.id === projectId);
+    if (project) {
+      this.dialog.open(MembersDialogComponent, {
+        width: '600px',
+        data: { project }
+      });
+    }
   }
 
   canEditOrDelete(): boolean {
