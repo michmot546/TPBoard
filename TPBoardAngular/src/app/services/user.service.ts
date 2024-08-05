@@ -33,6 +33,9 @@ export class UserService {
   getUserByName(name: string): Observable<User> {
     return this.http.get<User>(`${this.apiUrl}/GetUserByName/${name}`);
   }
+  getUserName(id: number | null): Observable<{ name: string }> {
+    return this.http.get<{ name: string }>(`${this.apiUrl}/GetUserName/${id}`);
+  }
   updateUserName(userId: number, name: string): Observable<any> {
     return this.http.put(`${this.apiUrl}/UpdateUserNameSelf`, { id: userId, name });
   }

@@ -128,6 +128,18 @@ namespace TPBoardWebApi.Controllers
 
             return Ok(user);
         }
+        [Authorize(Roles = "Admin,Moderator,User")]
+        [HttpGet("GetUserName/{id}")]
+        public IActionResult GetUserName(int id)
+        {
+            var user = _userService.GetUserById(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return Ok(new { name = user.Name });
+        }
 
         [Authorize(Roles = "Admin")]
         [HttpPut("UpdateUserName")]

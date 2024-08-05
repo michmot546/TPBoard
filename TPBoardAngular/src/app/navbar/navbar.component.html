@@ -1,5 +1,8 @@
 <mat-toolbar color="primary">
   <span>TPBoard</span>
+  <div class="user-info">
+    <span *ngIf="userName">Logged in as: {{ userName }}</span>
+  </div>
   <span class="spacer"></span>
   <button mat-button [matMenuTriggerFor]="menu">Menu</button>
   <mat-menu #menu="matMenu">

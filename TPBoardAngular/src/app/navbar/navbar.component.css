@@ -1,4 +1,7 @@
 .spacer {
     flex: 1 1 auto;
   }
-  
+.user-info{
+  font-size: small;
+  margin-left: 12px;
+}
