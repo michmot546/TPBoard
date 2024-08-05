@@ -165,7 +165,7 @@ namespace TPBoardWebApi.Controllers
 
         [Authorize(Roles = "Admin,Moderator,User")]
         [HttpPut("UpdateUserNameSelf")]
-        public IActionResult UpdateUserNameSelf([FromBody] User dto)
+        public IActionResult UpdateUserNameSelf([FromBody] UpdateNameDto dto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             if (userId != dto.Id)
@@ -188,7 +188,7 @@ namespace TPBoardWebApi.Controllers
 
         [Authorize(Roles = "Admin,Moderator,User")]
         [HttpPut("UpdateUserEmailSelf")]
-        public IActionResult UpdateUserEmailSelf([FromBody] User dto)
+        public IActionResult UpdateUserEmailSelf([FromBody] UpdateEmailDto dto)
         {
             var userId = int.Parse(User.FindFirst(ClaimTypes.NameIdentifier)?.Value);
             if (userId != dto.Id)
