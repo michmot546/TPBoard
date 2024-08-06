@@ -3,8 +3,7 @@ import { HttpClient, HttpErrorResponse } from '@angular/common/http';
 import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
 import { catchError, tap, switchMap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-
-import { UserService } from './user.service'; // Make sure this path is correct
+import { UserService } from './user.service';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -17,7 +16,7 @@ export class AuthService {
   constructor(
     private http: HttpClient,
     private router: Router,
-    private userService: UserService // Inject UserService
+    private userService: UserService
   ) {
     this.isAuthenticated().subscribe();
   }

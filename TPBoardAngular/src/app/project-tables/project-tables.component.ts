@@ -134,14 +134,13 @@ export class ProjectTablesComponent implements OnInit {
       );
 
       const movedElement = event.container.data[event.currentIndex];
-      movedElement.tableId = table.id; // Update the tableId for the moved element
+      movedElement.tableId = table.id;
       this.tableElementService.updateTableElement(movedElement).subscribe({
         next: () => console.log(`Updated element ID ${movedElement.id}`),
         error: err => console.error(`Failed to update element ID ${movedElement.id}:`, err)
       });
     }
 
-    // Update the table in the backend
     this.tableService.updateTable(table).subscribe({
       next: () => console.log(`Updated table ID ${table.id}`),
       error: err => console.error(`Failed to update table ID ${table.id}:`, err)
