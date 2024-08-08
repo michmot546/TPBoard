@@ -47,7 +47,21 @@
 .edit-input {
   width: 100%;
 }
+.action-button:hover {
+  background-color: #e0e0e0;
+}
 
+.view-button {
+  color: #1976d2;
+}
+
+.edit-button {
+  color: #388e3c;
+}
+
+.delete-button {
+  color: #d32f2f;
+}
 .not-authenticated {
   text-align: center;
   padding: 20px;

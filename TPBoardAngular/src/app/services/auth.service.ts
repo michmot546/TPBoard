@@ -1,9 +1,8 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpErrorResponse } from '@angular/common/http';
-import { Observable, throwError, of, BehaviorSubject } from 'rxjs';
-import { catchError, tap, switchMap } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
+import { catchError, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import { UserService } from './user.service';
 import { jwtDecode } from 'jwt-decode';
 
 @Injectable({
@@ -15,8 +14,7 @@ export class AuthService {
 
   constructor(
     private http: HttpClient,
-    private router: Router,
-    private userService: UserService
+    private router: Router
   ) {
     this.isAuthenticated().subscribe();
   }
@@ -65,18 +63,7 @@ export class AuthService {
     if (token) {
       const decoded: any = jwtDecode(token);
       if (decoded.exp * 1000 > Date.now()) {
-        this.userService.getUserById(decoded.nameid).subscribe(
-          user => {
-            if (user) {
-              this.isAuthenticatedSubject.next(true);
-            } else {
-              this.logout();
-            }
-          },
-          () => {
-            this.logout();
-          }
-        );
+        this.isAuthenticatedSubject.next(true);
       } else {
         this.logout();
       }

@@ -46,6 +46,7 @@ import {MatSelectModule} from '@angular/material/select';
 import { MatTabsModule } from '@angular/material/tabs';
 import { AuthService } from './services/auth.service';
 import { MembersDialogComponent } from './members-dialog/members-dialog.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
 @NgModule({
   declarations: [
     AppComponent,
@@ -88,7 +89,8 @@ import { MembersDialogComponent } from './members-dialog/members-dialog.componen
     MatDialogModule,
     MatOptionModule,
     MatSelectModule,
-    MatTabsModule
+    MatTabsModule,
+    MatTooltipModule
   ],
   exports: [RouterModule],
   providers: [

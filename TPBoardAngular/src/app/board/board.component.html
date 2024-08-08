@@ -16,11 +16,15 @@
         <mat-card-subtitle>Author: {{ getOwnerName(project.ownerId) }}</mat-card-subtitle>
       </mat-card-header>
       <mat-card-actions>
-        <button mat-button [routerLink]="['/project', project.id]">VIEW</button>
-        <button *ngIf="canEditOrDelete()" mat-button (click)="toggleEdit(project)">
-          {{ project.editing ? 'SAVE' : 'EDIT' }}
+        <button mat-button [routerLink]="['/project', project.id]" class="action-button view-button">
+          <mat-icon>visibility</mat-icon> VIEW
         </button>
-        <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="deleteProject(project.id)">DELETE</button>
+        <button *ngIf="canEditOrDelete()" mat-button (click)="toggleEdit(project)" class="action-button edit-button">
+          <mat-icon>edit</mat-icon> {{ project.editing ? 'SAVE' : 'EDIT' }}
+        </button>
+        <button *ngIf="canEditOrDelete()" mat-button color="warn" (click)="deleteProject(project.id)" class="action-button delete-button">
+          <mat-icon>delete</mat-icon> DELETE
+        </button>
       </mat-card-actions>
     </mat-card>
   </div>
